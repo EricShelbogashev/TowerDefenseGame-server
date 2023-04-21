@@ -1,0 +1,248 @@
+openapi: 3.0.0
+info:
+  version: '0'
+  title: AuthServiceAPI
+  description: API for Tower Defense game study project. Performed by Eric Shelbogashev.
+
+paths:
+  /auth/register:
+    post:
+      summary: Метод для инициализации регистрации пользователя.
+      tags:
+        - Auth
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+      responses:
+        '200':
+          description: Пользователь успешно зарегистрирован.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        '400':
+          description: Что-то пошло не так.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        '206':
+          description: Возникла проблема при отправке письма для подтверждения регистрации
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+  /auth/authorize:
+    post:
+      summary: Метод для аутентификации пользователя.
+      tags:
+        - Auth
+      operationId: authorizeUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequest"
+      responses:
+        '200':
+          description: Авторизация прошла успешно.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        '400':
+          description: Что-то пошло не так.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+#  /user/info/{nickname}:
+#    get:
+#      summary: Получение информации о пользователе.
+#      tags:
+#        - User
+#      operationId: userInfo
+#      security:
+#        - bearerAuth: [ ]
+#      parameters:
+#        - name: nickname
+#          in: path
+#          required: true
+#          description: Имя пользователя.
+#          schema:
+#            type: string
+#            example: Player00
+#      responses:
+#        '200':
+#          description: Получена информация о пользователе
+#          content:
+#            application/json:
+#              schema:
+#                $ref: "#/components/schemas/UserInfoResponse"
+#        '400':
+#          description: Что-то пошло не так.
+#          content:
+#            application/json:
+#              schema:
+#                $ref: "#/components/schemas/Message"
+  /user/friends/add:
+    post:
+      summary: Метод для добавления друга пользователя.
+      tags:
+        - User
+      operationId: addFriend
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FriendRequest"
+      responses:
+        '200':
+          description: Друг успешно добавлен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        '400':
+          description: Что-то пошло не так.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+  /user/friends/remove:
+    post:
+      summary: Метод для удаления друга пользователя.
+      tags:
+        - User
+      operationId: removeFriend
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FriendRequest"
+      responses:
+        '200':
+          description: Друг успешно удален.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        '400':
+          description: Что-то пошло не так.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+  /user/friends/get:
+    get:
+      summary: Метод для получения списка друзей.
+      tags:
+        - User
+      operationId: getFriends
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Список друзей получен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FriendResponse"
+        '400':
+          description: Что-то пошло не так.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Message:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "incorrect password"
+    UserRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: Player00
+        password:
+          type: string
+          example: qwerty123
+    AuthRequest:
+      type: object
+      required:
+        - identifier
+        - password
+      properties:
+        identifier:
+          type: string
+          example: Player00
+        password:
+          type: string
+          example: qwerty123
+    FriendRequest:
+      type: object
+      required:
+        - identifier
+      properties:
+        identifier:
+          type: string
+          example: Player00
+    UserInfoResponse:
+      type: object
+      required:
+        - nickname
+      properties:
+        nickname:
+          type: string
+          example: Player00
+    FriendResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/UserInfoResponse"
+    AuthResponse:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          example: fzKicHdjPjKJVdJ2OjJtJoS6dDJ7JlqYWDK3.dfzKfeXJjPjJyNkN1OUZObIzjUjFup5jubfx7JlqwbH5hSHkmJjxjbXG1JkpyOUF3NkN6NEJzg.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    LobbyCreateResponse:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+          example: fzKicHdjPjKJVdJ2OjJtJoS6dDJ7JlqYWDK3.dfzKfeXJjPjJyNkN1OUZObIzjUjFup5jubfx7JlqwbH5hSHkmJjxjbXG1JkpyOUF3NkN6NEJzg.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    LobbyMembersResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/UserInfoResponse"
+      example: [ { "nickname": "Player00",
+                   "avatar": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" } ]

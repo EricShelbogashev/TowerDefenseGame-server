@@ -1,0 +1,46 @@
+spring:
+  config:
+    import: optional:file:.env.local[.properties]
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+#    rabbitmq-plugins enable rabbitmq_stomp
+  data:
+    redis:
+      password: admin
+      database: -1
+      host: localhost
+      port: 6379
+
+  datasource:
+    url: ${USER_DB_DATASOURCE_URL}
+    username: ${USER_DB_USER}
+    password: ${USER_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: /liquibase/db.changelog-1.0.xml
+    url: jdbc:postgresql://localhost:5432/users
+    user: admin
+    password: admin
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  port: 8092
+  address: localhost
+  tomcat:
+    connection-timeout: 3600000
+  netty:
+    connection-timeout: 3600000
+  jetty:
+    connection-idle-timeout: 3600000
+  servlet:
+    session:
+      timeout: 6h
+
+jwt:
+  token:
+    secret: someSecretWord
+    expired: 15552000000 # 180 days
+
