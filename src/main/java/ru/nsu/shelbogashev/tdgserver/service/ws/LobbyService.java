@@ -13,7 +13,9 @@ import ru.nsu.shelbogashev.tdgserver.model.ws.Lobby;
 import ru.nsu.shelbogashev.tdgserver.model.ws.Status;
 import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
 
-import static ru.nsu.shelbogashev.tdgserver.message.ResponseMessage.SYSTEM_ALREADY_HAS_LOBBY_ERROR;
+import java.util.List;
+
+import static ru.nsu.shelbogashev.tdgserver.message.ResponseMessage.*;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -21,25 +23,46 @@ import static ru.nsu.shelbogashev.tdgserver.message.ResponseMessage.SYSTEM_ALREA
 @Service
 public class LobbyService {
 
-    RedisTemplate<String, Lobby> redisTemplate;
+    RedisTemplate<String, Lobby> lobbyRedisTemplate;
     WebSocketUserService userService;
+    RedisUserLock userLock;
 
     public LobbyDto initLobby(String adminSessionId) {
         log.info("createLobby() : " + adminSessionId);
 
         // Необходим мьютекс на пользователя. Быстрые запросы к серверу могут создать dangling лобби.
-        WebSocketUser user = userService.getWebSocketUser(adminSessionId);
-        if (user.getLobbyId() != null) {
-            log.info("Exception in initLobby() for user with session id " + adminSessionId + " : " + SYSTEM_ALREADY_HAS_LOBBY_ERROR);
-            throw new TowerDefenseException(SYSTEM_ALREADY_HAS_LOBBY_ERROR);
+        synchronized (userLock) {
+            WebSocketUser user = userService.getWebSocketUser(adminSessionId);
+            if (user.getLobbyId() != null) {
+                log.info("Exception in initLobby() for user with session id " + adminSessionId + " : " + SYSTEM_ALREADY_HAS_LOBBY_ERROR);
+                throw new TowerDefenseException(SYSTEM_ALREADY_HAS_LOBBY_ERROR);
+            }
+
+            Lobby lobby = Lobby.builder().adminSessionId(adminSessionId).build();
+            lobbyRedisTemplate.opsForValue().set(LobbyKeyHelper.makeKey(lobby.getId()), lobby);
+
+            user.setLobbyId(lobby.getId());
+            user.setStatus(Status.IN_LOBBY);
+            userService.updateWebSocketUser(user);
+            return Mapper.toLobbyDto(lobby);
         }
+    }
 
-        Lobby lobby = Lobby.builder().adminSessionId(adminSessionId).build();
-        redisTemplate.opsForValue().set(LobbyKeyHelper.makeKey(lobby.getId()), lobby);
+    public LobbyDto destroyLobby(String adminSessionId) {
+        // TODO: логгировать все unexpected error.
+        log.info("destroyLobby() : adminSessionId=" + adminSessionId);
 
-        user.setLobbyId(lobby.getId());
-        user.setStatus(Status.IN_LOBBY);
-        userService.updateWebSocketUser(user);
+        WebSocketUser webSocketUser = userService.getWebSocketUser(adminSessionId);
+        if (webSocketUser == null) throw new TowerDefenseException(UNEXPECTED_ERROR);
+        if (webSocketUser.getLobbyId() == null) throw new TowerDefenseException(USER_NOT_IN_A_LOBBY);
+
+        Lobby lobby = lobbyRedisTemplate.opsForValue().getAndDelete(LobbyKeyHelper.makeKey(webSocketUser.getLobbyId()));
+
+        if (lobby == null) throw new TowerDefenseException(UNEXPECTED_ERROR);
+        if (!lobby.getAdminSessionId().equals(adminSessionId)) throw new TowerDefenseException(USER_NOT_AN_ADMIN);
+
+        List<String> members = lobby.getMembers();
+        members.forEach(userService::returnToMenu);
         return Mapper.toLobbyDto(lobby);
     }
 

@@ -32,6 +32,7 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api:${property("javaxVersion")}")
     implementation("org.liquibase:liquibase-core:4.21.1")
 
+    compileOnly("org.redisson:redisson-spring-boot-starter:3.20.1")
     compileOnly("javax.servlet:javax.servlet-api:4.0.1")
     compileOnly("org.projectlombok:lombok:1.18.26")
     annotationProcessor("org.projectlombok:lombok:1.18.26")

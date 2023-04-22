@@ -2,6 +2,9 @@ package ru.nsu.shelbogashev.tdgserver.message;
 
 public class ResponseMessage {
     public static String USER_NOT_FOUND = "пользователь не найден";
+    public static String LOBBY_NOT_FOUND = "лобби не найдено";
+    public static String USER_NOT_IN_A_LOBBY = "пользователь не состоит в лобби";
+    public static String USER_NOT_AN_ADMIN = "пользователь не является создателем лобби";
     public static String JWT_IS_EXPIRED_OR_INVALID = "jwt токен просрочен или некорректен";
     public static String SYSTEM_ALREADY_HAS_USERNAME_ERROR = "имя пользователя уже занято";
     public static String SUCCESSFUL_REGISTRATION = "аккаунт зарегистрирован";

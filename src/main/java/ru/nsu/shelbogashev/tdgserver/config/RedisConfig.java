@@ -94,5 +94,9 @@ public class RedisConfig {
                 .cacheDefaults(RedisCacheConfiguration.defaultCacheConfig())
                 .build();
     }
+
+    private static final String LOCK_NAME = "lock";
+
+
 }
 

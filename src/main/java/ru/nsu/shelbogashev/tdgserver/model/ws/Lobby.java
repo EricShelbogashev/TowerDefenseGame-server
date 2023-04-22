@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -20,4 +22,8 @@ public class Lobby {
     Long createdAt = Instant.now().toEpochMilli();
 
     String adminSessionId;
+
+    // Must contains sessionIds of lobby members.
+    @Builder.Default
+    List<String> members = Collections.emptyList();
 }

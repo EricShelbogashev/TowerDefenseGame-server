@@ -8,6 +8,7 @@ spring:
 #    rabbitmq-plugins enable rabbitmq_stomp
   data:
     redis:
+#      https://github.com/redisson/redisson/tree/master/redisson-spring-boot-starter
       password: admin
       database: -1
       host: localhost

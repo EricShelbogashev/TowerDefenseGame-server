@@ -7,11 +7,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpAttributesContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.service.ws.WebSocketUserService;
 
-import java.io.PrintStream;
-import java.security.Principal;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -27,5 +26,11 @@ public class UserController {
                 .sessionId(SimpAttributesContextHolder.currentAttributes().getSessionId())
                 .build();
         webSocketUserService.addWebSocketUser(webSocketUser);
+    }
+
+    @EventListener
+    public void userJoinedToServer(SessionDisconnectEvent event) {
+        WebSocketUser webSocketUser = webSocketUserService.popWebSocketUser(event.getSessionId());
+
     }
 }
