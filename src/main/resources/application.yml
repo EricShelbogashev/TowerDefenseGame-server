@@ -13,6 +13,7 @@ spring:
       database: -1
       host: localhost
       port: 6379
+      username: admin
 
   datasource:
     url: ${USER_DB_DATASOURCE_URL}

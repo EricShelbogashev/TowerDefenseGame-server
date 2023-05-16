@@ -3,10 +3,10 @@ package ru.nsu.shelbogashev.tdgserver.validation.impl;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
-import ru.nsu.shelbogashev.tdgserver.service.ws.WebSocketUserService;
+import ru.nsu.shelbogashev.tdgserver.service.WebSocketUserService;
 import ru.nsu.shelbogashev.tdgserver.validation.SpecificTopicSubscriptionInitValidator;
 
-import static ru.nsu.shelbogashev.tdgserver.api.v0.ws.LobbyController.FETCH_LOBBY_DESTROYED;
+import static ru.nsu.shelbogashev.tdgserver.api.v0.LobbyController.FETCH_LOBBY_DESTROYED;
 
 @Component
 public class LobbyDestroyedTopicValidator implements SpecificTopicSubscriptionInitValidator {
@@ -18,9 +18,9 @@ public class LobbyDestroyedTopicValidator implements SpecificTopicSubscriptionIn
     public LobbyDestroyedTopicValidator(@Lazy WebSocketUserService userService) {
         this.userService = userService;
     }
-    /* TODO: Сделать валидатор менее зависимым от topic path
-        путем вынесения информации о топике в отдельный класс и валидации там же.
-     */
+    /* TODO: Make the validator less dependent on the topic path
+by extracting topic information into a separate class and performing validation there.
+*/
 
     @Override
     public String destination() {
@@ -32,7 +32,7 @@ public class LobbyDestroyedTopicValidator implements SpecificTopicSubscriptionIn
     public Boolean validate(String sessionId, String topicDestination) {
         if (!topicDestination.startsWith(pathStart) || !topicDestination.endsWith(pathEnd)) return null;
 
-        WebSocketUser webSocketUser = userService.getWebSocketUser(sessionId);
+        WebSocketUser webSocketUser = userService.getWebSocketUserBySessionId(sessionId);
         String lobbyIdFromTopic = topicDestination.substring(pathIdStartInx, topicDestination.length() - pathEnd.length());
         return lobbyIdFromTopic.equals(webSocketUser.getLobbyId());
     }

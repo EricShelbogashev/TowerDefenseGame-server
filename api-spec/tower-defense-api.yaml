@@ -61,35 +61,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Message"
-#  /user/info/{nickname}:
-#    get:
-#      summary: Получение информации о пользователе.
-#      tags:
-#        - User
-#      operationId: userInfo
-#      security:
-#        - bearerAuth: [ ]
-#      parameters:
-#        - name: nickname
-#          in: path
-#          required: true
-#          description: Имя пользователя.
-#          schema:
-#            type: string
-#            example: Player00
-#      responses:
-#        '200':
-#          description: Получена информация о пользователе
-#          content:
-#            application/json:
-#              schema:
-#                $ref: "#/components/schemas/UserInfoResponse"
-#        '400':
-#          description: Что-то пошло не так.
-#          content:
-#            application/json:
-#              schema:
-#                $ref: "#/components/schemas/Message"
+  #  /user/info/{username}:
+  #    get:
+  #      summary: Получение информации о пользователе.
+  #      tags:
+  #        - User
+  #      operationId: userInfo
+  #      security:
+  #        - bearerAuth: [ ]
+  #      parameters:
+  #        - name: username
+  #          in: path
+  #          required: true
+  #          description: Имя пользователя.
+  #          schema:
+  #            type: string
+  #            example: Player00
+  #      responses:
+  #        '200':
+  #          description: Получена информация о пользователе
+  #          content:
+  #            application/json:
+  #              schema:
+  #                $ref: "#/components/schemas/UserInfoResponse"
+  #        '400':
+  #          description: Что-то пошло не так.
+  #          content:
+  #            application/json:
+  #              schema:
+  #                $ref: "#/components/schemas/Message"
   /user/friends/add:
     post:
       summary: Метод для добавления друга пользователя.
@@ -165,6 +165,88 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Message"
+  /user/friends/get/online:
+    get:
+      summary: Метод для получения списка друзей.
+      tags:
+        - User
+      operationId: getFriendsOnline
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Список друзей получен.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FriendOnlineResponse"
+        '400':
+          description: Что-то пошло не так.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+  /user/lobby/create:
+    post:
+      summary: Method witch performs lobby creation.
+      tags:
+        - User
+      operationId: lobbyCreate
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Lobby was created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LobbyCreateResponse"
+        '400':
+          description: Lobby is already created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+  /user/lobby/accept:
+    post:
+      summary: Method witch performs lobby destruction.
+      tags:
+        - User
+      operationId: lobbyAccept
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LobbyRequest"
+      responses:
+        '200':
+          description: Lobby was being destroyed.
+        '400':
+          description: Lobby is not exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+  /user/lobby/destroy:
+    post:
+      summary: Method witch performs lobby destruction.
+      tags:
+        - User
+      operationId: lobbyDestroy
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Lobby was being destroyed.
+        '400':
+          description: Lobby is not exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
 components:
   securitySchemes:
     bearerAuth:
@@ -215,15 +297,56 @@ components:
     UserInfoResponse:
       type: object
       required:
-        - nickname
+        - username
       properties:
-        nickname:
+        username:
+          type: string
+          example: Player00
+    WebsocketUserInfoResponse:
+      type: object
+      required:
+        - sessionId 
+        - username 
+        - status 
+      properties:
+        sessionId:
+          type: string
+          example: Player00
+        username:
+          type: string
+          example: Player00
+        status:
           type: string
           example: Player00
     FriendResponse:
       type: array
       items:
         $ref: "#/components/schemas/UserInfoResponse"
+    LobbyRequest:
+      type: object
+      required:
+        - id
+        - createdAt
+        - adminSessionId
+        - members
+      properties:
+        id:
+          type: string
+          example: Player00
+        createdAt:
+          type: string
+          example: Player00
+        adminSessionId:
+          type: string
+          example: Player00
+        members:
+          type: array
+          items:
+            type: string
+    FriendOnlineResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/WebsocketUserInfoResponse"
     AuthResponse:
       type: object
       required:
@@ -235,14 +358,14 @@ components:
     LobbyCreateResponse:
       type: object
       required:
-        - accessToken
+        - lobbyId
       properties:
-        accessToken:
+        lobbyId:
           type: string
           example: fzKicHdjPjKJVdJ2OjJtJoS6dDJ7JlqYWDK3.dfzKfeXJjPjJyNkN1OUZObIzjUjFup5jubfx7JlqwbH5hSHkmJjxjbXG1JkpyOUF3NkN6NEJzg.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
     LobbyMembersResponse:
       type: array
       items:
         $ref: "#/components/schemas/UserInfoResponse"
-      example: [ { "nickname": "Player00",
+      example: [ { "username": "Player00",
                    "avatar": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" } ]

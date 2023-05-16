@@ -32,12 +32,16 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api:${property("javaxVersion")}")
     implementation("org.liquibase:liquibase-core:4.21.1")
 
-    compileOnly("org.redisson:redisson-spring-boot-starter:3.20.1")
+//    compileOnly("org.redisson:redisson-spring-boot-starter:3.20.1")
     compileOnly("javax.servlet:javax.servlet-api:4.0.1")
     compileOnly("org.projectlombok:lombok:1.18.26")
     annotationProcessor("org.projectlombok:lombok:1.18.26")
     testCompileOnly("org.projectlombok:lombok:1.18.26")
     testAnnotationProcessor("org.projectlombok:lombok:1.18.26")
+
+    implementation("com.badlogicgames.gdx:gdx:1.10.0")
+    implementation("com.badlogicgames.gdx:gdx-backend-headless:1.10.0")
+    implementation("com.badlogicgames.gdx:gdx-platform:1.10.0:natives-desktop")
 
     implementation("org.openapitools:jackson-databind-nullable:${property("openapitoolsVersion")}")
     implementation("org.springdoc:springdoc-openapi-ui:${property("openapiUiVersion")}")
@@ -56,6 +60,7 @@ tasks.test {
 tasks.withType<JavaCompile> {
     dependsOn(tasks.clean)
     dependsOn(tasks.openApiGenerate)
+    options.encoding = "UTF-8"
     source("$buildDir/generated/src/main/kotlin")
 }
 

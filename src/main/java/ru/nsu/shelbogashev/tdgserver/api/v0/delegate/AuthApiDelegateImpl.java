@@ -8,22 +8,21 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RestController;
-import ru.nsu.shelbogashev.tdgserver.dto.Mapper;
-import ru.nsu.shelbogashev.tdgserver.dto.model.AuthResponseDto;
-import ru.nsu.shelbogashev.tdgserver.dto.model.MessageDto;
-import ru.nsu.shelbogashev.tdgserver.exception.IllegalOperationException;
+import ru.nsu.shelbogashev.tdgserver.FIXED_exception.IllegalOperationException;
 import ru.nsu.shelbogashev.tdgserver.generated.api.AuthApiDelegate;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.AuthRequest;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.AuthResponse;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.Message;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.UserRequest;
 import ru.nsu.shelbogashev.tdgserver.model.rest.User;
-import ru.nsu.shelbogashev.tdgserver.security.jwt.JwtTokenProvider;
-import ru.nsu.shelbogashev.tdgserver.service.rest.UserService;
+import ru.nsu.shelbogashev.tdgserver.FIXED_security.jwt.JwtTokenProvider;
+import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
+import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
+import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
 import java.util.Optional;
 
-import static ru.nsu.shelbogashev.tdgserver.message.ResponseMessage.*;
+import static ru.nsu.shelbogashev.tdgserver.FIXED_message.ResponseMessage.*;
 
 @RestController
 @Slf4j
@@ -45,30 +44,23 @@ public class AuthApiDelegateImpl implements AuthApiDelegate {
         String username = authenticationRequestDto.getIdentifier();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, authenticationRequestDto.getPassword()));
 
-        // TODO : Добавить {@code .filter()} для валидации входных данных.
         User user = Optional.of(username)
                 .flatMap(userService::findByUsername)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
 
         String token = jwtTokenProvider.createToken(user);
-
-        return ResponseEntity.ok(Mapper.toAuthResponse(new AuthResponseDto(token)));
+        return ResponseEntity.ok(ResponseFactory.getAuthResponse(token));
     }
 
     @NotNull
     @Override
     public ResponseEntity<Message> registerUser(@NotNull UserRequest userRequest) {
-        // TODO: Валидация пароля и имени пользователя.
         if (Optional.of(userRequest.getUsername()).flatMap(userService::findByUsername).isPresent()) {
             throw new IllegalOperationException(SYSTEM_ALREADY_HAS_USERNAME_ERROR);
         }
 
         User user = Mapper.toUser(userRequest);
-        return ResponseEntity.ok(
-                Mapper.toMessage(
-                        new MessageDto(userService.register(user))
-                )
-        );
+        return ResponseEntity.ok(ResponseFactory.getMessage(userService.register(user)));
     }
 
 }
