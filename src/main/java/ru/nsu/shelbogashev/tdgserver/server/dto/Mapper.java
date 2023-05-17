@@ -1,9 +1,6 @@
 package ru.nsu.shelbogashev.tdgserver.server.dto;
 
-import ru.nsu.shelbogashev.tdgserver.generated.api.dto.LobbyCreateResponse;
-import ru.nsu.shelbogashev.tdgserver.generated.api.dto.Message;
-import ru.nsu.shelbogashev.tdgserver.generated.api.dto.UserInfoResponse;
-import ru.nsu.shelbogashev.tdgserver.generated.api.dto.UserRequest;
+import ru.nsu.shelbogashev.tdgserver.generated.api.dto.*;
 import ru.nsu.shelbogashev.tdgserver.model.rest.User;
 import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUserLite;
@@ -15,12 +12,12 @@ import java.util.Map;
 
 public class Mapper {
     public static LobbyDto toLobbyDto(Lobby lobby) {
-        return LobbyDto.builder()
-                .id(lobby.getId())
-                .createdAt(lobby.getCreatedAt())
-                .adminSessionId(lobby.getAdminSessionId())
-                .members(lobby.getMembers())
-                .build();
+        LobbyDto lobbyDto = new LobbyDto();
+        lobbyDto.setId(lobby.getId());
+        lobbyDto.setAdminSessionId(lobby.getAdminSessionId());
+        lobbyDto.setMembers(lobby.getMembers());
+        lobbyDto.setCreatedAt(lobby.getCreatedAt().toString());
+        return lobbyDto;
     }
 
     public static WebSocketUserLite toWebSocketUserLite(WebSocketUser user) {

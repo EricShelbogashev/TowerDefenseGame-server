@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -12,9 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Lobby {
-    String id;
+    @Builder.Default
+    String id = String.valueOf(UUID.randomUUID());
 
-    Long createdAt;
+    @Builder.Default
+    Long createdAt = System.currentTimeMillis();
 
     String adminSessionId;
 

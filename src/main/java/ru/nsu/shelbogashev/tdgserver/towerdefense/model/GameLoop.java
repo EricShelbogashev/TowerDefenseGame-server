@@ -30,10 +30,10 @@ public class GameLoop implements OnGameEndListenerNative {
         if (state > 0) throw new IllegalStateException("game loop is already started");
         Runnable updateField = () -> {
             log.info("[Runnable] updateField()");
-            this.listener.updated(lobby, field.update());
+            this.listener.updated(lobby, field.update(), field.getGuildhall());
         };
         ScheduledExecutorService updateService = Executors.newScheduledThreadPool(2);
-        this.fieldUpdateTask = updateService.scheduleWithFixedDelay(updateField, 1000, 100, TimeUnit.MILLISECONDS);
+        this.fieldUpdateTask = updateService.scheduleWithFixedDelay(updateField, 1000, 300, TimeUnit.MILLISECONDS);
 
         Runnable spawnEntity = () -> field.getRoads().forEach((identifier, road) -> {
             log.info("[Runnable] spawnEntity(identifier=%s, road=%s)".formatted(identifier, road));
@@ -55,5 +55,9 @@ public class GameLoop implements OnGameEndListenerNative {
         fieldUpdateTask.cancel(true);
         entitySpawnTask.cancel(true);
         state = -1;
+    }
+
+    public void createTower(String sessionId, TowerCreate towerCreate) {
+        field.roads.get(sessionId).insert(Entities.valueOf(towerCreate.getTowerName()), towerCreate.getCellNumber());
     }
 }

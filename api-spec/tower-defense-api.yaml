@@ -200,7 +200,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LobbyCreateResponse"
+                $ref: "#/components/schemas/LobbyDto"
         '400':
           description: Lobby is already created.
           content:
@@ -220,7 +220,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LobbyRequest"
+              $ref: "#/components/schemas/LobbyDto"
       responses:
         '200':
           description: Lobby was being destroyed.
@@ -322,7 +322,7 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/UserInfoResponse"
-    LobbyRequest:
+    LobbyDto:
       type: object
       required:
         - id

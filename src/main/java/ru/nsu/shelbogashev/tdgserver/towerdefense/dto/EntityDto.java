@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EntityDto {
-    long id;
+    String id;
     String name;
     int cell;
     int health;

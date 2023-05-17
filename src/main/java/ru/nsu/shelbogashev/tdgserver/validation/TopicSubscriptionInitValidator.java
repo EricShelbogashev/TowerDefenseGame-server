@@ -15,11 +15,12 @@ public class TopicSubscriptionInitValidator {
 
     @NotNull
     public Boolean validate(String sessionId, String topicDestination) {
-        for (SpecificTopicSubscriptionInitValidator validator : validators) {
-            Boolean validated = validator.validate(sessionId, topicDestination);
-            if (validated == null) continue;
-            return validated;
-        }
         return true;
+//        for (SpecificTopicSubscriptionInitValidator validator : validators) {
+//            Boolean validated = validator.validate(sessionId, topicDestination);
+//            if (validated == null) continue;
+//            return validated;
+//        }
+//        return true;
     }
 }

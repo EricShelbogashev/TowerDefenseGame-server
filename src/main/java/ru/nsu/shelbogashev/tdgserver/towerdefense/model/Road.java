@@ -12,8 +12,8 @@ public class Road {
     private int[] fromEnemyDamage;
     private final String identifier;
     private final int length;
-    private final List<Entity> enemies;
-    private final List<Entity> allies;
+    private List<Entity> enemies;
+    private List<Entity> allies;
     private final Object monitor = new Object();
 
     public Road(int length, String identifier) {
@@ -24,7 +24,7 @@ public class Road {
         prepareDamageHolders();
     }
 
-    public void insert(Entities entity, int position) {
+    public synchronized void insert(Entities entity, int position) {
         log.info("insert(Entities=%s, position=%d)".formatted(entity.name(), position));
         if (position < 0 && position >= length) throw new IndexOutOfBoundsException();
 
@@ -59,9 +59,15 @@ public class Road {
         }
         synchronized (monitor) {
             enemies.forEach(it -> it.acceptDamage(fromAllyDamage[it.getCell()]));
+            List<Entity> list = enemies.stream().filter(Entity::isAlive).toList();
+            enemies.clear();
+            enemies.addAll(list);
         }
         synchronized (monitor) {
             allies.forEach(it -> it.acceptDamage(fromEnemyDamage[it.getCell()]));
+            List<Entity> list = allies.stream().filter(Entity::isAlive).toList();
+            allies.clear();
+            allies.addAll(list);
         }
         return fromEnemyDamage[0];
     }

@@ -37,11 +37,14 @@ public class LobbyService {
             }
 
             Lobby lobby = Lobby.builder().adminSessionId(adminSessionId).build();
+            /* IMPORTANT */
+            lobby.getMembers().add(adminSessionId);
             setLobby(lobby.getId(), lobby);
 
             user.setLobbyId(lobby.getId());
             user.setStatus(Status.IN_LOBBY);
             userService.setWebSocketUser(user);
+            log.info("createLobby() : lobby.getId()=%s".formatted(lobby.getId()));
             return lobby;
         }
     }
