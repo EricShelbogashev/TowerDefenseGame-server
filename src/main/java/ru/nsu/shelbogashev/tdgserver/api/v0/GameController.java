@@ -9,7 +9,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpAttributesContextHolder;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.server.dto.GameStartDto;
 import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;

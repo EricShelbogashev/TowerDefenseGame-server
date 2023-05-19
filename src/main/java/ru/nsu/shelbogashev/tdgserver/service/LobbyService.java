@@ -6,14 +6,14 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import ru.nsu.shelbogashev.tdgserver.FIXED_exception.TowerDefenseException;
-import ru.nsu.shelbogashev.tdgserver.model.ws.Status;
-import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
+import ru.nsu.shelbogashev.tdgserver.server.ws.Status;
+import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 
 import java.util.List;
 
-import static ru.nsu.shelbogashev.tdgserver.FIXED_message.ResponseMessage.*;
+import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.*;
 
 @Log4j2
 @RequiredArgsConstructor

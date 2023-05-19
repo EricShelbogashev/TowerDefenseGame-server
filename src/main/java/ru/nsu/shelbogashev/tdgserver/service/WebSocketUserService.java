@@ -7,16 +7,16 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import ru.nsu.shelbogashev.tdgserver.FIXED_exception.TowerDefenseException;
-import ru.nsu.shelbogashev.tdgserver.model.rest.User;
-import ru.nsu.shelbogashev.tdgserver.model.ws.Status;
-import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
+import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.ws.Status;
+import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static ru.nsu.shelbogashev.tdgserver.FIXED_message.ResponseMessage.UNEXPECTED_ERROR;
+import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.UNEXPECTED_ERROR;
 
 @Log4j2
 @RequiredArgsConstructor

@@ -13,11 +13,11 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import ru.nsu.shelbogashev.tdgserver.FIXED_exception.TowerDefenseException;
+import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
 import ru.nsu.shelbogashev.tdgserver.api.v0.delegate.LobbyDestinationHelper;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.LobbyDto;
-import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
-import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUserLite;
+import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUserLite;
 import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.service.LobbyService;
@@ -27,9 +27,8 @@ import ru.nsu.shelbogashev.tdgserver.service.WebSocketUserService;
 import java.util.List;
 import java.util.Objects;
 
-import static ru.nsu.shelbogashev.tdgserver.FIXED_message.ResponseMessage.UNEXPECTED_ERROR;
+import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.UNEXPECTED_ERROR;
 
-// TODO: FIX API!!!
 @Log4j2
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -38,10 +37,10 @@ public class UserController {
     private WebSocketUserService webSocketUserService;
     private LobbyService lobbyService;
     private RedisUserLock userLock;
-    public static final String API_ONLINE_FRIENDS = "api/friend.online.all";
-    public static final String API_INVITE_FRIEND = "api/lobby.invite.friend";
-    public static final String FETCH_ONLINE_FRIENDS = "topic/friend.online.all";
-    public static final String FETCH_INVITE_FRIEND = "topic/lobby.invitation";
+    public static final String API_ONLINE_FRIENDS = "/api/friend.online.all";
+    public static final String API_INVITE_FRIEND = "/api/lobby.invite.friend";
+    public static final String FETCH_ONLINE_FRIENDS = "/topic/friend.online.all";
+    public static final String FETCH_INVITE_FRIEND = "/topic/lobby.invitation";
     public static final String FETCH_LOBBY_UPDATED = "/topic/lobby.{lobby_id}.updated";
     private SimpMessagingTemplate messagingTemplate;
 

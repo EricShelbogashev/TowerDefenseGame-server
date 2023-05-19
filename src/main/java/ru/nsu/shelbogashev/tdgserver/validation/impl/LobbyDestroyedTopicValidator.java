@@ -2,7 +2,7 @@ package ru.nsu.shelbogashev.tdgserver.validation.impl;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.service.WebSocketUserService;
 import ru.nsu.shelbogashev.tdgserver.validation.SpecificTopicSubscriptionInitValidator;
 
@@ -18,9 +18,7 @@ public class LobbyDestroyedTopicValidator implements SpecificTopicSubscriptionIn
     public LobbyDestroyedTopicValidator(@Lazy WebSocketUserService userService) {
         this.userService = userService;
     }
-    /* TODO: Make the validator less dependent on the topic path
-by extracting topic information into a separate class and performing validation there.
-*/
+    /* TODO: Make the validator less dependent on the topic path by extracting topic information into a separate class and performing validation there. */
 
     @Override
     public String destination() {

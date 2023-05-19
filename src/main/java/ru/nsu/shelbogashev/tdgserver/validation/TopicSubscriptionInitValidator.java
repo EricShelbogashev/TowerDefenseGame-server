@@ -16,6 +16,7 @@ public class TopicSubscriptionInitValidator {
     @NotNull
     public Boolean validate(String sessionId, String topicDestination) {
         return true;
+        // TODO: implement.
 //        for (SpecificTopicSubscriptionInitValidator validator : validators) {
 //            Boolean validated = validator.validate(sessionId, topicDestination);
 //            if (validated == null) continue;

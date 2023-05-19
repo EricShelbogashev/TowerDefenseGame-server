@@ -30,12 +30,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Message"
-        '206':
-          description: Возникла проблема при отправке письма для подтверждения регистрации
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Message"
   /auth/authorize:
     post:
       summary: Метод для аутентификации пользователя.
@@ -61,35 +55,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Message"
-  #  /user/info/{username}:
-  #    get:
-  #      summary: Получение информации о пользователе.
-  #      tags:
-  #        - User
-  #      operationId: userInfo
-  #      security:
-  #        - bearerAuth: [ ]
-  #      parameters:
-  #        - name: username
-  #          in: path
-  #          required: true
-  #          description: Имя пользователя.
-  #          schema:
-  #            type: string
-  #            example: Player00
-  #      responses:
-  #        '200':
-  #          description: Получена информация о пользователе
-  #          content:
-  #            application/json:
-  #              schema:
-  #                $ref: "#/components/schemas/UserInfoResponse"
-  #        '400':
-  #          description: Что-то пошло не так.
-  #          content:
-  #            application/json:
-  #              schema:
-  #                $ref: "#/components/schemas/Message"
   /user/friends/add:
     post:
       summary: Метод для добавления друга пользователя.

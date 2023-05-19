@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.nsu.shelbogashev.tdgserver.model.rest.User;
-import ru.nsu.shelbogashev.tdgserver.FIXED_repository.UserRepository;
+import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
 import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
 import java.util.Optional;
 
-import static ru.nsu.shelbogashev.tdgserver.FIXED_message.ResponseMessage.SUCCESSFUL_REGISTRATION;
+import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.SUCCESSFUL_REGISTRATION;
 
 @Service
 @Log4j2

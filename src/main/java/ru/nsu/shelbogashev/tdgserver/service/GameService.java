@@ -4,7 +4,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
-import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.towerdefense.dto.Mapper;
 import ru.nsu.shelbogashev.tdgserver.towerdefense.dto.TowerCreateDto;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;

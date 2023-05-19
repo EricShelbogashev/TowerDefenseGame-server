@@ -8,21 +8,21 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RestController;
-import ru.nsu.shelbogashev.tdgserver.FIXED_exception.IllegalOperationException;
+import ru.nsu.shelbogashev.tdgserver.server.exception.IllegalOperationException;
 import ru.nsu.shelbogashev.tdgserver.generated.api.AuthApiDelegate;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.AuthRequest;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.AuthResponse;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.Message;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.UserRequest;
-import ru.nsu.shelbogashev.tdgserver.model.rest.User;
-import ru.nsu.shelbogashev.tdgserver.FIXED_security.jwt.JwtTokenProvider;
+import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtTokenProvider;
 import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
 import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
 import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
 import java.util.Optional;
 
-import static ru.nsu.shelbogashev.tdgserver.FIXED_message.ResponseMessage.*;
+import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.*;
 
 @RestController
 @Slf4j

@@ -2,7 +2,7 @@ package ru.nsu.shelbogashev.tdgserver.towerdefense.model;
 
 public enum Entities {
     DEFAULT_GUILDHALL("guildhall", 200, 0, 0, 0, Team.ALLY, 0),
-    DEFAULT_TOWER("default_tower", 20, 50, 500, 2, Team.ALLY, Long.MAX_VALUE),
+    DEFAULT_TOWER("default_tower", 20, 50, 500, 1, Team.ALLY, Long.MAX_VALUE),
     DEFAULT_ENEMY("default_enemy", 100, 1, 200, 1, Team.ENEMY, 2000);
 
     private final String name;

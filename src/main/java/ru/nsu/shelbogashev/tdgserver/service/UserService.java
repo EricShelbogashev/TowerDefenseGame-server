@@ -1,6 +1,6 @@
 package ru.nsu.shelbogashev.tdgserver.service;
 
-import ru.nsu.shelbogashev.tdgserver.model.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.rest.User;
 
 import java.util.Optional;
 

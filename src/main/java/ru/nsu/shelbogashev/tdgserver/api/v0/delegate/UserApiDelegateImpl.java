@@ -7,12 +7,12 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
-import ru.nsu.shelbogashev.tdgserver.FIXED_exception.TowerDefenseException;
+import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
 import ru.nsu.shelbogashev.tdgserver.generated.api.UserApiDelegate;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.*;
-import ru.nsu.shelbogashev.tdgserver.model.rest.User;
-import ru.nsu.shelbogashev.tdgserver.model.ws.Status;
-import ru.nsu.shelbogashev.tdgserver.model.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.ws.Status;
+import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
 import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static ru.nsu.shelbogashev.tdgserver.FIXED_message.ResponseMessage.*;
+import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.*;
 
 @RestController
 @Slf4j
