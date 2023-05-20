@@ -3,10 +3,12 @@ package ru.nsu.shelbogashev.tdgserver.service.impl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage;
 import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
+import ru.nsu.shelbogashev.tdgserver.server.rest.User;
 import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
 import java.util.Optional;
@@ -32,9 +34,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean authorize(User user) {
+        String encoded = passwordEncoder.encode(user.getPassword());
+        User orig = userRepository.findByUsername(user.getUsername()).orElse(null);
+        if (orig == null) {
+            throw new BadCredentialsException(ResponseMessage.USER_NOT_FOUND);
+        }
+        return orig.getPassword().equals(encoded);
+    }
+
+    @Override
     public String register(User user) {
         // TODO: Add input validation.
-        // TODO: Add check for existence of a user with such email and nickname in the database separately.
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User registeredUser = userRepository.save(user);
 

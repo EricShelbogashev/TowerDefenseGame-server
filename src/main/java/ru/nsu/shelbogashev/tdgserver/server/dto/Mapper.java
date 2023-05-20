@@ -1,10 +1,10 @@
 package ru.nsu.shelbogashev.tdgserver.server.dto;
 
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.*;
+import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.server.rest.User;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUserLite;
-import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 
 import java.util.HashMap;
 import java.util.List;

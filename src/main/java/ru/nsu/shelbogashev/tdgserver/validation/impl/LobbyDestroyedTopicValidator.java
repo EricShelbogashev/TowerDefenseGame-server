@@ -10,10 +10,10 @@ import static ru.nsu.shelbogashev.tdgserver.api.v0.delegate.UserApiDelegateImpl.
 
 @Component
 public class LobbyDestroyedTopicValidator implements SpecificTopicSubscriptionInitValidator {
-    final WebSocketUserService userService;
     private static final int pathIdStartInx = FETCH_LOBBY_DESTROYED.indexOf("{");
     private static final String pathStart = FETCH_LOBBY_DESTROYED.substring(0, FETCH_LOBBY_DESTROYED.indexOf("{"));
     private static final String pathEnd = FETCH_LOBBY_DESTROYED.substring(FETCH_LOBBY_DESTROYED.indexOf("}") + 1);
+    final WebSocketUserService userService;
 
     public LobbyDestroyedTopicValidator(@Lazy WebSocketUserService userService) {
         this.userService = userService;

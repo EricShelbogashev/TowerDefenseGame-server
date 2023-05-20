@@ -23,7 +23,7 @@ public class TopicSubscriptionInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(@NotNull Message<?> message, @NotNull MessageChannel channel) {
-        StompHeaderAccessor headerAccessor= StompHeaderAccessor.wrap(message);
+        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(message);
         if (StompCommand.SUBSCRIBE.equals(headerAccessor.getCommand())) {
             String sessionId = headerAccessor.getSessionId();
             if (!validator.validate(sessionId, headerAccessor.getDestination())) {

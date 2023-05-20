@@ -5,6 +5,7 @@ public enum Entities {
     DEFAULT_TOWER("default_tower", 20, 50, 500, 1, Team.ALLY, Long.MAX_VALUE),
     DEFAULT_ENEMY("default_enemy", 100, 1, 200, 1, Team.ENEMY, 2000);
 
+    private static long ID = Long.MIN_VALUE;
     private final String name;
     private final int cell;
     private final int health;
@@ -13,7 +14,6 @@ public enum Entities {
     private final int actionRadius;
     private final Team team;
     private final long stepTimeInMillis;
-    private static long ID = Long.MIN_VALUE;
 
     Entities(
             String name,

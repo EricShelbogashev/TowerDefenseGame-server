@@ -7,10 +7,10 @@ import java.util.List;
 
 @Log4j2
 public class Field {
-    HashMap<String, Road> roads;
-    private final OnGameEndListenerNative listener;
     public static int DEFAULT_ROAD_LENGTH = 10;
+    private final OnGameEndListenerNative listener;
     private final Entity guildhall;
+    HashMap<String, Road> roads;
 
     public Field(List<String> identifiers, OnGameEndListenerNative listener) {
         roads = new HashMap<>(identifiers.size());

@@ -13,13 +13,13 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
 import ru.nsu.shelbogashev.tdgserver.api.v0.delegate.LobbyDestinationHelper;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.LobbyDto;
+import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
+import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
+import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUserLite;
-import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
-import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.service.LobbyService;
 import ru.nsu.shelbogashev.tdgserver.service.RedisUserLock;
 import ru.nsu.shelbogashev.tdgserver.service.WebSocketUserService;
@@ -34,14 +34,14 @@ import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.UNEXP
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Controller
 public class UserController {
-    private WebSocketUserService webSocketUserService;
-    private LobbyService lobbyService;
-    private RedisUserLock userLock;
     public static final String API_ONLINE_FRIENDS = "/api/friend.online.all";
     public static final String API_INVITE_FRIEND = "/api/lobby.invite.friend";
     public static final String FETCH_ONLINE_FRIENDS = "/topic/friend.online.all";
     public static final String FETCH_INVITE_FRIEND = "/topic/lobby.invitation";
     public static final String FETCH_LOBBY_UPDATED = "/topic/lobby.{lobby_id}.updated";
+    private WebSocketUserService webSocketUserService;
+    private LobbyService lobbyService;
+    private RedisUserLock userLock;
     private SimpMessagingTemplate messagingTemplate;
 
     @EventListener

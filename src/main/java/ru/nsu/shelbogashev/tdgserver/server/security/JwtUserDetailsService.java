@@ -28,12 +28,11 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("loadUserByUsername() : loaded user with login " + username);
         User user = Optional.of(username)
                 .flatMap(userService::findByUsername)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));
 
-        JwtUser jwtUser = JwtUserFactory.create(user);
-        log.info("loadUserByUsername() : loaded user with login " + username);
-        return jwtUser;
+        return JwtUserFactory.create(user);
     }
 }

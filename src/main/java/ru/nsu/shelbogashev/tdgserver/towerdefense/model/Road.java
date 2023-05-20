@@ -8,13 +8,13 @@ import java.util.List;
 
 @Log4j2
 public class Road {
-    private int[] fromAllyDamage;
-    private int[] fromEnemyDamage;
     private final String identifier;
     private final int length;
-    private List<Entity> enemies;
-    private List<Entity> allies;
     private final Object monitor = new Object();
+    private int[] fromAllyDamage;
+    private int[] fromEnemyDamage;
+    private final List<Entity> enemies;
+    private final List<Entity> allies;
 
     public Road(int length, String identifier) {
         this.identifier = identifier;

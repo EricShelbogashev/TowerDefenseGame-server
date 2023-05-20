@@ -1,15 +1,16 @@
 package ru.nsu.shelbogashev.tdgserver.server.config;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtConfigurer;
 import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtTokenProvider;
+import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
+@Log4j2
 @Configuration
 public class SecurityConfig {
 
@@ -36,12 +37,10 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager() {
-        return new AuthenticationManager() {
-            @Override
-            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                // Null if {@link JwtTokenProvider#getAuthentication returned null}
-                return authentication;
-            }
+        return authentication -> {
+            log.info("authenticate() : authentication.getName()=" + authentication.getName());
+            // TODO: implement
+            return authentication;
         };
     }
 

@@ -7,9 +7,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
+import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.server.ws.Status;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
-import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 
 import java.util.List;
 

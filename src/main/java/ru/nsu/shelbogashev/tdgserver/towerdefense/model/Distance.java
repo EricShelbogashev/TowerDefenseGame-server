@@ -1,20 +1,12 @@
 package ru.nsu.shelbogashev.tdgserver.towerdefense.model;
 
 public class Distance {
-    private long value;
     private final Metric metric;
-
-    public enum Metric {
-        PERCENT
-    }
+    private final long value;
 
     public Distance(long value, Metric metric) {
         this.value = value;
         this.metric = metric;
-    }
-
-    long getAs(Metric metric) {
-        return convertTo(value, this.metric, metric);
     }
 
     /* Common is a value with bounds: [0, 4294967296]. */
@@ -28,5 +20,13 @@ public class Distance {
         return switch (metricAfter) {
             case PERCENT -> (long) ((double) value / 4294967296f);
         };
+    }
+
+    long getAs(Metric metric) {
+        return convertTo(value, this.metric, metric);
+    }
+
+    public enum Metric {
+        PERCENT
     }
 }

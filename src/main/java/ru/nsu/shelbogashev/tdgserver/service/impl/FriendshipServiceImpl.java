@@ -3,12 +3,12 @@ package ru.nsu.shelbogashev.tdgserver.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nsu.shelbogashev.tdgserver.server.exception.IllegalOperationException;
-import ru.nsu.shelbogashev.tdgserver.server.rest.Friendship;
-import ru.nsu.shelbogashev.tdgserver.server.rest.FriendshipInvitation;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
 import ru.nsu.shelbogashev.tdgserver.server.repository.FriendshipInvitationRepository;
 import ru.nsu.shelbogashev.tdgserver.server.repository.FriendshipRepository;
 import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
+import ru.nsu.shelbogashev.tdgserver.server.rest.Friendship;
+import ru.nsu.shelbogashev.tdgserver.server.rest.FriendshipInvitation;
+import ru.nsu.shelbogashev.tdgserver.server.rest.User;
 import ru.nsu.shelbogashev.tdgserver.service.FriendshipService;
 
 import java.util.List;

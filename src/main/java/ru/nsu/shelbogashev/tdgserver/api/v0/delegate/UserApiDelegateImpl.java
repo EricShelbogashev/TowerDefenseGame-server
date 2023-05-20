@@ -1,5 +1,6 @@
 package ru.nsu.shelbogashev.tdgserver.api.v0.delegate;
 
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,34 +8,36 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
-import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
 import ru.nsu.shelbogashev.tdgserver.generated.api.UserApiDelegate;
-import ru.nsu.shelbogashev.tdgserver.generated.api.dto.*;
+import ru.nsu.shelbogashev.tdgserver.generated.api.dto.LobbyDto;
+import ru.nsu.shelbogashev.tdgserver.generated.api.dto.UserInfoResponse;
+import ru.nsu.shelbogashev.tdgserver.generated.api.dto.WebsocketUserInfoResponse;
+import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
+import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
+import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
+import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.server.rest.User;
 import ru.nsu.shelbogashev.tdgserver.server.ws.Status;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
-import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
-import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
-import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.service.FriendshipService;
-import ru.nsu.shelbogashev.tdgserver.service.UserService;
 import ru.nsu.shelbogashev.tdgserver.service.LobbyService;
+import ru.nsu.shelbogashev.tdgserver.service.UserService;
 import ru.nsu.shelbogashev.tdgserver.service.WebSocketUserService;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.*;
+import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.UNEXPECTED_ERROR;
 
+@Log4j2
 @RestController
-@Slf4j
 public class UserApiDelegateImpl implements UserApiDelegate {
+    public static final String FETCH_LOBBY_DESTROYED = "/topic/lobby.{lobby_id}.destroyed";
     private final UserService userService;
     private final WebSocketUserService webSocketUserService;
     private final FriendshipService friendshipService;
     private final LobbyService lobbyService;
-    public static final String FETCH_LOBBY_DESTROYED = "/topic/lobby.{lobby_id}.destroyed";
     private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired

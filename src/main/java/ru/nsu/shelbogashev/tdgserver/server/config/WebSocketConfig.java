@@ -29,9 +29,18 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 @Order(HIGHEST_PRECEDENCE + 50)
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    public static final String TOPIC_DESTINATION_PREFIX = "/topic/";
+    //    public static final String USER_DESTINATION_PREFIX = "reply";
+    public static final String REGISTRY = "/websocket";
     private final DefaultSimpUserRegistry userRegistry = new DefaultSimpUserRegistry();
     private final DefaultUserDestinationResolver resolver = new DefaultUserDestinationResolver(userRegistry);
     private TopicSubscriptionInterceptor topicSubscriptionInterceptor;
+    @Value("${spring.rabbitmq.host}")
+    String host;
+    @Value("${spring.rabbitmq.username}")
+    String username;
+    @Value("${spring.rabbitmq.password}")
+    String password;
 
     @Autowired
     public WebSocketConfig(TopicSubscriptionInterceptor topicSubscriptionInterceptor) {
@@ -49,19 +58,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public UserDestinationResolver userDestinationResolver() {
         return resolver;
     }
-
-    @Value("${spring.rabbitmq.host}")
-    String host;
-
-    @Value("${spring.rabbitmq.username}")
-    String username;
-
-    @Value("${spring.rabbitmq.password}")
-    String password;
-
-    public static final String TOPIC_DESTINATION_PREFIX = "/topic/";
-//    public static final String USER_DESTINATION_PREFIX = "reply";
-    public static final String REGISTRY = "/websocket";
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {

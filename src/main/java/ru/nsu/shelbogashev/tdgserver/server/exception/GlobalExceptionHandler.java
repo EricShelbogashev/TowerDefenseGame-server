@@ -11,9 +11,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.Message;
-import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
-import ru.nsu.shelbogashev.tdgserver.server.dto.MessageDto;
-import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
 import ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage;
 
 @ControllerAdvice
@@ -53,7 +50,7 @@ public class GlobalExceptionHandler {
 
     @MessageExceptionHandler(TowerDefenseException.class)
     @SendToUser(FETCH_ERROR_MESSAGE)
-    public MessageDto handleTowerDefenseException(TowerDefenseException exception) {
-        return Mapper.toMessageDto(ResponseFactory.getMessage(exception.getMessage()));
+    public ResponseEntity<Message> handleTowerDefenseException(TowerDefenseException exception) {
+        return getMessageResponse(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

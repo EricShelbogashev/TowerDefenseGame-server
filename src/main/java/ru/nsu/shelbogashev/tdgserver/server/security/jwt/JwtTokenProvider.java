@@ -9,10 +9,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.JWT_IS_EXPIRED_OR_INVALID;
 
@@ -73,5 +75,4 @@ public class JwtTokenProvider {
             throw new IllegalArgumentException(JWT_IS_EXPIRED_OR_INVALID);
         }
     }
-
 }

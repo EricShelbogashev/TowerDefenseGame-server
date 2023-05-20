@@ -25,18 +25,15 @@ import java.util.Objects;
 @Configuration
 public class RedisConfig {
 
+    private static final String LOCK_NAME = "lock";
     @Value("${spring.data.redis.database}")
     Integer redisDatabase;
-
     @Value("${spring.data.redis.password}")
     String password;
-
     @Value("${spring.data.redis.host}")
     String host;
-
     @Value("${spring.data.redis.username}")
     String username;
-
     @Value("${spring.data.redis.port}")
     Integer port;
 
@@ -54,7 +51,7 @@ public class RedisConfig {
             redisStandaloneConfiguration.setPassword(password);
         }
 
-            if (redisDatabase > 0) {
+        if (redisDatabase > 0) {
             redisStandaloneConfiguration.setDatabase(redisDatabase);
         }
 
@@ -94,8 +91,6 @@ public class RedisConfig {
                 .cacheDefaults(RedisCacheConfiguration.defaultCacheConfig())
                 .build();
     }
-
-    private static final String LOCK_NAME = "lock";
 
 
 }

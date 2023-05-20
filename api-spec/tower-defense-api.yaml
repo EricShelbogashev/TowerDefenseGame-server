@@ -174,7 +174,7 @@ paths:
                 $ref: "#/components/schemas/Message"
   /user/lobby/accept:
     post:
-      summary: Method witch performs lobby destruction.
+      summary: Method witch performs invitation accept.
       tags:
         - User
       operationId: lobbyAccept
@@ -226,7 +226,6 @@ components:
       properties:
         message:
           type: string
-          example: "incorrect password"
     UserRequest:
       type: object
       required:
@@ -235,10 +234,8 @@ components:
       properties:
         username:
           type: string
-          example: Player00
         password:
           type: string
-          example: qwerty123
     AuthRequest:
       type: object
       required:
@@ -247,10 +244,8 @@ components:
       properties:
         identifier:
           type: string
-          example: Player00
         password:
           type: string
-          example: qwerty123
     FriendRequest:
       type: object
       required:
@@ -258,7 +253,6 @@ components:
       properties:
         identifier:
           type: string
-          example: Player00
     UserInfoResponse:
       type: object
       required:
@@ -266,7 +260,6 @@ components:
       properties:
         username:
           type: string
-          example: Player00
     WebsocketUserInfoResponse:
       type: object
       required:
@@ -276,13 +269,10 @@ components:
       properties:
         sessionId:
           type: string
-          example: Player00
         username:
           type: string
-          example: Player00
         status:
           type: string
-          example: Player00
     FriendResponse:
       type: array
       items:
@@ -297,13 +287,10 @@ components:
       properties:
         id:
           type: string
-          example: Player00
         createdAt:
           type: string
-          example: Player00
         adminSessionId:
           type: string
-          example: Player00
         members:
           type: array
           items:
@@ -319,7 +306,6 @@ components:
       properties:
         token:
           type: string
-          example: fzKicHdjPjKJVdJ2OjJtJoS6dDJ7JlqYWDK3.dfzKfeXJjPjJyNkN1OUZObIzjUjFup5jubfx7JlqwbH5hSHkmJjxjbXG1JkpyOUF3NkN6NEJzg.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
     LobbyCreateResponse:
       type: object
       required:
@@ -327,10 +313,7 @@ components:
       properties:
         lobbyId:
           type: string
-          example: fzKicHdjPjKJVdJ2OjJtJoS6dDJ7JlqYWDK3.dfzKfeXJjPjJyNkN1OUZObIzjUjFup5jubfx7JlqwbH5hSHkmJjxjbXG1JkpyOUF3NkN6NEJzg.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
     LobbyMembersResponse:
       type: array
       items:
         $ref: "#/components/schemas/UserInfoResponse"
-      example: [ { "username": "Player00",
-                   "avatar": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Wikipedia-logo-v2-en.svg" } ]
