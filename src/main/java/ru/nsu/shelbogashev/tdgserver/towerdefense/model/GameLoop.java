@@ -30,6 +30,7 @@ public class GameLoop implements OnGameEndListenerNative {
         if (state > 0) throw new IllegalStateException("game loop is already started");
         Runnable updateField = () -> {
             log.info("[Runnable] updateField()");
+
             this.listener.updated(lobby, field.update(), field.getGuildhall());
         };
         ScheduledExecutorService updateService = Executors.newScheduledThreadPool(2);
@@ -37,6 +38,7 @@ public class GameLoop implements OnGameEndListenerNative {
 
         Runnable spawnEntity = () -> field.getRoads().forEach((identifier, road) -> {
             log.info("[Runnable] spawnEntity(identifier=%s, road=%s)".formatted(identifier, road));
+
             road.insert(Entities.DEFAULT_ENEMY, road.getLength() - 1);
         });
         ScheduledExecutorService spawnService = Executors.newScheduledThreadPool(2);

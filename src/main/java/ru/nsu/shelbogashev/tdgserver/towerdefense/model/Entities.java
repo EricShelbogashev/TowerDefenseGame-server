@@ -36,7 +36,7 @@ public enum Entities {
 
     Entity toEntity() {
         return Entity.builder()
-                .id(ID++)
+                .id(++ID)
                 .name(this.name)
                 .damage(this.damage)
                 .health(this.health)

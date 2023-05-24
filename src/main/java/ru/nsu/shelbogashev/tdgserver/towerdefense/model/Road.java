@@ -111,12 +111,6 @@ public class Road {
                 damageHolder
         ));
     }
-    // TODO: чистить мертвые сущности
-
-    public String getIdentifier() {
-        log.info("getIdentifier()");
-        return identifier;
-    }
 
     public int getLength() {
         log.info("getLength()");
