@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nsu.shelbogashev.tdgserver.server.repository.RelationRepository;
 import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
-import ru.nsu.shelbogashev.tdgserver.server.rest.Relation;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.Relation;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
 import java.util.List;

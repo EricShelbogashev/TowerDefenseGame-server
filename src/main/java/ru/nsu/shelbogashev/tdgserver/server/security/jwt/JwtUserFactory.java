@@ -1,6 +1,6 @@
 package ru.nsu.shelbogashev.tdgserver.server.security.jwt;
 
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 
 public final class JwtUserFactory {
 

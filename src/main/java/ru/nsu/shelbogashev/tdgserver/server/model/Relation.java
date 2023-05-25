@@ -1,4 +1,4 @@
-package ru.nsu.shelbogashev.tdgserver.server.rest;
+package ru.nsu.shelbogashev.tdgserver.server.model;
 
 import jakarta.persistence.*;
 

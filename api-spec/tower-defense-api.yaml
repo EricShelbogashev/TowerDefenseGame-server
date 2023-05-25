@@ -146,7 +146,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/WebsocketUserInfoDto"
+                  $ref: "#/components/schemas/WebSocketUserDto"
         '400':
           description: Something went wrong.
           content:
@@ -245,7 +245,7 @@ components:
       properties:
         username:
           type: string
-    WebsocketUserInfoDto:
+    WebSocketUserDto:
       type: object
       required:
         - sessionId
@@ -267,14 +267,14 @@ components:
       required:
         - id
         - createdAt
-        - adminSessionId
+        - adminUsername
         - members
       properties:
         id:
           type: string
         createdAt:
           type: string
-        adminSessionId:
+        adminUsername:
           type: string
         members:
           type: array

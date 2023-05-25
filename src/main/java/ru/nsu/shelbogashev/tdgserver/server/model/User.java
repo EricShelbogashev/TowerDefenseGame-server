@@ -1,26 +1,35 @@
 package ru.nsu.shelbogashev.tdgserver.server.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.extern.jackson.Jacksonized;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name = "users")
 @Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@Jacksonized
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
-    @NonNull String username;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-    @Builder.Default
-    @NonNull Status status = Status.OFFLINE;
+    @Column(name = "username")
+    String username;
 
-    @Builder.Default
-    @NonNull String websocketSessionId = "";
+    @Column(name = "password")
+    String password;
 
-    public enum Status {
-        IN_MENU, IN_LOBBY, IN_GAME, OFFLINE
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
     }
 }

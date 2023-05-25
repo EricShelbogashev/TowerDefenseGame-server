@@ -1,6 +1,6 @@
 package ru.nsu.shelbogashev.tdgserver.service;
 
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 
 import java.util.List;
 

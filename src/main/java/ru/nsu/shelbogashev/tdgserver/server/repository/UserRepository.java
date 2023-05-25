@@ -1,7 +1,7 @@
 package ru.nsu.shelbogashev.tdgserver.server.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 
 import java.util.Optional;
 

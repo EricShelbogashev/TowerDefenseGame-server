@@ -3,10 +3,9 @@ package ru.nsu.shelbogashev.tdgserver.server.dto;
 import org.jetbrains.annotations.NotNull;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.*;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtUser;
-import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
-import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUserLite;
+import ru.nsu.shelbogashev.tdgserver.server.model.ws.WebSocketUser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,18 +14,18 @@ public class Mapper {
     public static @NotNull LobbyDto toLobbyDto(@NotNull Lobby lobby) {
         LobbyDto lobbyDto = new LobbyDto();
         lobbyDto.setId(lobby.getId());
-        lobbyDto.setAdminSessionId(lobby.getAdminUsername());
+        lobbyDto.setAdminUsername(lobby.getAdminUsername());
         lobbyDto.setMembers(lobby.getMembers());
         lobbyDto.setCreatedAt(lobby.getCreatedAt().toString());
         return lobbyDto;
     }
 
-    public static @NotNull WebSocketUserLite toWebSocketUserLite(@NotNull WebSocketUser user) {
-        return WebSocketUserLite.builder()
-                .username(user.getUsername())
-                .sessionId(user.getSessionId())
-                .status(user.getStatus())
-                .build();
+    public static @NotNull WebSocketUserDto toWebSocketUserDto(@NotNull WebSocketUser user) {
+        WebSocketUserDto webSocketUserDto = new WebSocketUserDto();
+        webSocketUserDto.setSessionId(user.getSessionId());
+        webSocketUserDto.setUsername(user.getUsername());
+        webSocketUserDto.setStatus(user.getStatus().toString());
+        return webSocketUserDto;
     }
 
     public static @NotNull User toUser(@NotNull AuthDto user) {
@@ -83,6 +82,15 @@ public class Mapper {
         return WebSocketUser.builder()
                 .username(user.getUsername())
                 .sessionId(sessionId)
+                .build();
+    }
+
+    public static Lobby toLobby(LobbyDto lobbyRequest) {
+        return Lobby.builder()
+                .id(lobbyRequest.getId())
+                .createdAt(Long.valueOf(lobbyRequest.getCreatedAt()))
+                .adminUsername(lobbyRequest.getAdminUsername())
+                .members(lobbyRequest.getMembers())
                 .build();
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.nsu.shelbogashev.tdgserver.server.exception.AuthException;
 import ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage;
 import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtTokenProvider;
 import ru.nsu.shelbogashev.tdgserver.service.AuthService;
 

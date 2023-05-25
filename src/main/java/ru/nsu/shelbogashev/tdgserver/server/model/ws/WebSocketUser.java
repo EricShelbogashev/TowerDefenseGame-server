@@ -1,4 +1,4 @@
-package ru.nsu.shelbogashev.tdgserver.server.ws;
+package ru.nsu.shelbogashev.tdgserver.server.model.ws;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -40,8 +40,8 @@ public class WebSocketUser implements Serializable {
         return lobby;
     }
 
-    public void joinLobby(String lobbyId) {
+    public void joinLobby(Lobby lobby) {
         status = Status.IN_LOBBY;
-        this.lobbyId = lobbyId;
+        this.lobbyId = lobby.getId();
     }
 }

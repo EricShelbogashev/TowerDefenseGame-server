@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtUserFactory;
 
 import java.util.Optional;
@@ -27,7 +27,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("loadUserByUsername() : loaded user with login " + username);
+        log.info("loadUserByUsername() : loaded user with login=" + username);
         User user = Optional.of(username)
                 .flatMap(userRepository::findByUsername)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND));

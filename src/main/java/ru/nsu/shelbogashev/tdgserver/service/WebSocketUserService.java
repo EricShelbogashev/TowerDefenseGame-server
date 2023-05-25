@@ -9,7 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.nsu.shelbogashev.tdgserver.server.exception.TowerDefenseException;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 import ru.nsu.shelbogashev.tdgserver.server.ws.Status;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 

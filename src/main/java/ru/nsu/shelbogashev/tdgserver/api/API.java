@@ -8,6 +8,8 @@ public class API {
 
     public static class STOMP {
         public static final String REGISTRY = "/websocket";
+        public static final String FETCH_LOBBY_DESTROYED = "/topic/lobby.{lobby_id}.destroyed";
+        public static final String FETCH_LOBBY_UPDATED = "/topic/lobby.{lobby_id}.updated";
     }
 
     public static class USER {

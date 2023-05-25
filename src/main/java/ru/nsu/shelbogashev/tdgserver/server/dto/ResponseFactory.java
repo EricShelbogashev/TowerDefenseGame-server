@@ -5,7 +5,6 @@ import ru.nsu.shelbogashev.tdgserver.generated.api.dto.MessageDto;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.TokenDto;
 
 public class ResponseFactory {
-    public static Void EMPTY = null;
 
     public static TokenDto toTokenDto(String token) {
         TokenDto response = new TokenDto();

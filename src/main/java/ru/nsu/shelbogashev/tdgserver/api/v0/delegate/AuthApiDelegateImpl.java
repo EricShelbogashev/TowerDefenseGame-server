@@ -11,7 +11,7 @@ import ru.nsu.shelbogashev.tdgserver.generated.api.dto.TokenDto;
 import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
 import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
 import ru.nsu.shelbogashev.tdgserver.server.exception.AuthException;
-import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
 import ru.nsu.shelbogashev.tdgserver.service.AuthService;
 
 import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.INCORRECT_PRESENTATION_OF_CREDENTIALS;

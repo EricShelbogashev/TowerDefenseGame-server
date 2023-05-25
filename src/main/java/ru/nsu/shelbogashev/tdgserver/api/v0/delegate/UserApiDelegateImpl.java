@@ -5,10 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.nsu.shelbogashev.tdgserver.generated.api.UserApiDelegate;
+import ru.nsu.shelbogashev.tdgserver.generated.api.dto.LobbyDto;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.UserDto;
+import ru.nsu.shelbogashev.tdgserver.generated.api.dto.WebSocketUserDto;
 import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
+import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.server.security.JwtUserDetailsService;
 import ru.nsu.shelbogashev.tdgserver.service.UserService;
+import ru.nsu.shelbogashev.tdgserver.service.WebsocketService;
 
 import java.util.List;
 
@@ -16,11 +22,13 @@ import java.util.List;
 @RestController
 public class UserApiDelegateImpl extends AuthenticatedController implements UserApiDelegate {
     private final UserService userService;
+    private final WebsocketService websocketService;
 
     @Autowired
-    public UserApiDelegateImpl(UserService userService, JwtUserDetailsService userDetailsService) {
+    public UserApiDelegateImpl(UserService userService, JwtUserDetailsService userDetailsService, WebsocketService websocketService) {
         super(userDetailsService);
         this.userService = userService;
+        this.websocketService = websocketService;
     }
 
     @Override
@@ -29,57 +37,31 @@ public class UserApiDelegateImpl extends AuthenticatedController implements User
         return ResponseEntity.ok(users);
     }
 
-//    @Override
-//    public ResponseEntity<List<WebsocketUserInfoResponse>> getFriendsOnline() {
-//        List<User> allFriends = getAllFriends();
-//        List<WebSocketUser> onlineFriends = allFriends.stream().map(
-//                it -> webSocketUserService.getWebSocketUserByUsername(it.getUsername())
-//        ).filter(Objects::nonNull).toList();
-//
-//        List<WebsocketUserInfoResponse> responses = onlineFriends.stream().map(it -> {
-//            WebsocketUserInfoResponse response = new WebsocketUserInfoResponse();
-//            response.setStatus(it.getStatus().name());
-//            response.setUsername(it.getUsername());
-//            response.setSessionId(it.getSessionId());
-//            return response;
-//        }).toList();
-//        return ResponseEntity.ok(responses);
-//    }
-//
-//
-//    @Override
-//    public ResponseEntity<LobbyDto> lobbyCreate() {
-//        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        WebSocketUser webSocketUser = webSocketUserService.getWebSocketUserByUsername(principal.getUsername());
-//        Lobby lobby = lobbyService.initLobby(webSocketUser.getSessionId());
-//        return ResponseEntity.ok(Mapper.toLobbyDto(lobby));
-//    }
-//
-//    @Override
-//    public ResponseEntity<Void> lobbyAccept(LobbyDto lobbyRequest) {
-//        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        WebSocketUser webSocketUser = webSocketUserService.getWebSocketUserByUsername(principal.getUsername());
-//        webSocketUser.setLobbyId(lobbyRequest.getId());
-//        webSocketUser.setStatus(Status.IN_LOBBY);
-//        webSocketUserService.setWebSocketUser(webSocketUser);
-//        lobbyService.acceptLobby(webSocketUser.getSessionId(), lobbyRequest.getId());
-//        return ResponseEntity.ok(ResponseFactory.EMPTY);
-//    }
-//
-//    @Override
-//    public ResponseEntity<Void> lobbyDestroy() {
-//        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        WebSocketUser webSocketUser = webSocketUserService.getWebSocketUserByUsername(principal.getUsername());
-//        Lobby lobby = lobbyService.getLobby(webSocketUser.getLobbyId());
-//        lobbyService.destroyLobby(webSocketUser.getLobbyId());
-//        fetchLobbyDestroyed(Mapper.toLobbyDto(lobby));
-//        return null;
-//    }
-//
-//    private void fetchLobbyDestroyed(LobbyDto lobbyDto) {
-//        messagingTemplate.convertAndSend(
-//                LobbyDestinationHelper.makeDestination(FETCH_LOBBY_DESTROYED, lobbyDto.getId()),
-//                lobbyDto
-//        );
-//    }
+    @Override
+    public ResponseEntity<List<WebSocketUserDto>> getFriendsOnline() {
+        List<WebSocketUser> onlineFriends = websocketService.getOnlineFriends(getCurrentUser());
+        List<WebSocketUserDto> response = onlineFriends.stream().map(Mapper::toWebSocketUserDto).toList();
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<LobbyDto> lobbyCreate() {
+        User user = getCurrentUser();
+        Lobby lobby = websocketService.createLobby(user);
+        return ResponseEntity.ok(Mapper.toLobbyDto(lobby));
+    }
+
+    @Override
+    public ResponseEntity<Void> lobbyAccept(LobbyDto lobbyRequest) {
+        User user = getCurrentUser();
+        websocketService.acceptLobby(user, Mapper.toLobby(lobbyRequest));
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> lobbyDestroy() {
+        User user = getCurrentUser();
+        websocketService.destroyLobby(user);
+        return null;
+    }
 }

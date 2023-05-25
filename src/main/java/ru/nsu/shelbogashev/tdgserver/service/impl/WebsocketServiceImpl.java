@@ -1,17 +1,24 @@
 package ru.nsu.shelbogashev.tdgserver.service.impl;
 
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import org.redisson.api.RBucket;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import ru.nsu.shelbogashev.tdgserver.server.exception.InternalServerException;
+import ru.nsu.shelbogashev.tdgserver.server.exception.UserException;
+import ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
-import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.server.model.User;
+import ru.nsu.shelbogashev.tdgserver.server.model.ws.WebSocketUser;
+import ru.nsu.shelbogashev.tdgserver.service.UserService;
 import ru.nsu.shelbogashev.tdgserver.service.WebsocketService;
 import ru.nsu.shelbogashev.tdgserver.service.handler.OnLobbyUpdateHandler;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 
@@ -30,10 +37,12 @@ public class WebsocketServiceImpl implements WebsocketService {
     private final static long DAYS_UNTIL_DESTROY = 7;
     private final RedissonClient redissonClient;
     private final OnLobbyUpdateHandler onLobbyUpdateHandler;
+    private final UserService userService;
 
-    public WebsocketServiceImpl(RedissonClient redissonClient, @Lazy OnLobbyUpdateHandler onLobbyUpdateHandler) {
+    public WebsocketServiceImpl(RedissonClient redissonClient, @Lazy OnLobbyUpdateHandler onLobbyUpdateHandler, UserService userService) {
         this.redissonClient = redissonClient;
         this.onLobbyUpdateHandler = onLobbyUpdateHandler;
+        this.userService = userService;
     }
 
     @Override
@@ -41,21 +50,6 @@ public class WebsocketServiceImpl implements WebsocketService {
         RLock lock = redissonClient.getFairLock(user.getUsername());
         lock.lock();
         try {
-            // TODO убрать ----------------
-            if (user.getUsername().equals("user1")) {
-                Lobby lobby = user.createLobby();
-                lobby.setId("123");
-                user.setLobbyId("123");
-                setLobby(lobby);
-            } else {
-                user.joinLobby("123");
-                Lobby lobby = getLobby("123");
-                List<String> members = lobby.getMembers();
-                members.add(user.getUsername());
-                setLobby(lobby);
-            }
-            // ----------------------------
-
             setUser(user);
         } finally {
             lock.unlock();
@@ -112,8 +106,61 @@ public class WebsocketServiceImpl implements WebsocketService {
         }
     }
 
+    @Override
+    public List<WebSocketUser> getOnlineFriends(User user) {
+        List<User> friends = userService.getAllFriends(user);
+        return friends.stream()
+                .map(User::getUsername)
+                .map(this::getUser)
+                .filter(Objects::nonNull)
+                .toList();
+    }
 
+    @Override
+    public @NotNull Lobby createLobby(User user) {
+        RLock userLock = redissonClient.getFairLock(user.getUsername());
+        userLock.lock();
+        WebSocketUser webSocketUser = getUser(user.getUsername());
+        if (webSocketUser.getLobbyId() != null) {
+            userLock.unlock();
+            throw new UserException(ResponseMessage.SYSTEM_ALREADY_HAS_LOBBY_ERROR);
+        }
 
+        Lobby lobby = webSocketUser.createLobby();
+        setLobby(lobby);
+        setUser(webSocketUser);
+        userLock.unlock();
+        return lobby;
+    }
+
+    @Override
+    public void acceptLobby(User user, Lobby lobby) {
+        RLock userLock = redissonClient.getFairLock(user.getUsername());
+        userLock.lock();
+        WebSocketUser webSocketUser = getUser(user.getUsername());
+        if (webSocketUser == null) {
+            throw new InternalServerException("acceptLobby() : webSocketUser is null, database is might be broken");
+        }
+
+        if (webSocketUser.getLobbyId() != null) {
+            userLock.unlock();
+            throw new UserException(ResponseMessage.USER_IS_ALREADY_A_LOBBY_MEMBER);
+        }
+
+        RLock lobbyLock = redissonClient.getFairLock(lobby.getId());
+        try {
+            lobbyLock.lock();
+            lobby = getLobby(lobby.getId());
+
+            webSocketUser.joinLobby(lobby);
+
+            setUser(webSocketUser);
+            setLobby(lobby);
+        } finally {
+            userLock.unlock();
+            lobbyLock.unlock();
+        }
+    }
 
 
     private void setUser(WebSocketUser user) {
