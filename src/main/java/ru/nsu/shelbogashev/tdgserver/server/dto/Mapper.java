@@ -1,26 +1,27 @@
 package ru.nsu.shelbogashev.tdgserver.server.dto;
 
+import org.jetbrains.annotations.NotNull;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.*;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.server.rest.User;
+import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtUser;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.server.ws.WebSocketUserLite;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Mapper {
-    public static LobbyDto toLobbyDto(Lobby lobby) {
+    public static @NotNull LobbyDto toLobbyDto(@NotNull Lobby lobby) {
         LobbyDto lobbyDto = new LobbyDto();
         lobbyDto.setId(lobby.getId());
-        lobbyDto.setAdminSessionId(lobby.getAdminSessionId());
+        lobbyDto.setAdminSessionId(lobby.getAdminUsername());
         lobbyDto.setMembers(lobby.getMembers());
         lobbyDto.setCreatedAt(lobby.getCreatedAt().toString());
         return lobbyDto;
     }
 
-    public static WebSocketUserLite toWebSocketUserLite(WebSocketUser user) {
+    public static @NotNull WebSocketUserLite toWebSocketUserLite(@NotNull WebSocketUser user) {
         return WebSocketUserLite.builder()
                 .username(user.getUsername())
                 .sessionId(user.getSessionId())
@@ -28,7 +29,7 @@ public class Mapper {
                 .build();
     }
 
-    public static User toUser(UserRequest user) {
+    public static @NotNull User toUser(@NotNull AuthDto user) {
         return User.builder()
                 .id(-1L)
                 .username(user.getUsername())
@@ -36,6 +37,20 @@ public class Mapper {
                 .build();
     }
 
+    public static @NotNull User toUser(@NotNull JwtUser user) {
+        return User.builder()
+                .id(user.id())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .build();
+    }
+
+    public static @NotNull UserDto toUserDto(@NotNull User user) {
+        UserDto dto = new UserDto();
+        dto.setUsername(user.getUsername());
+        return dto;
+    }
+/*
     public static UserInfoResponse toUserInfoResponse(User user) {
         UserInfoResponse userInfoResponse = new UserInfoResponse();
         userInfoResponse.setUsername(user.getUsername());
@@ -56,11 +71,18 @@ public class Mapper {
         return MessageDto.builder()
                 .message(message.getMessage())
                 .build();
-    }
+    }*/
 
     public static Map<String, Object> toMessageJsonMap(String message) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("message", message);
         return map;
+    }
+
+    public static @NotNull WebSocketUser toWebSocketUser(@NotNull JwtUser user, @NotNull String sessionId) {
+        return WebSocketUser.builder()
+                .username(user.getUsername())
+                .sessionId(sessionId)
+                .build();
     }
 }

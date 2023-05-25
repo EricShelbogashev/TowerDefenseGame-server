@@ -2,14 +2,18 @@ package ru.nsu.shelbogashev.tdgserver.service;
 
 import ru.nsu.shelbogashev.tdgserver.server.rest.User;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface UserService {
-    boolean authorize(User user);
-
-    String register(User user) throws IllegalStateException;
-
-    Optional<User> findByUsername(String username);
-
-    Optional<User> findUserById(Long id);
+//    List<User> getAllIncomingInvitations(Long userId);
+//
+//    List<User> getAllOutgoingInvitations(Long userId);
+//
+//    String declineInvitation(User decliner, User friendCandidate);
+//
+//    String sendInvitation(User sender, User possibleFriend);
+//
+    List<User> getAllFriends(User user);
+//
+//    String removeFriend(User deleter, User removedFriend);
 }

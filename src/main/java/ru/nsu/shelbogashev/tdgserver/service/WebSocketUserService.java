@@ -1,3 +1,4 @@
+/*
 package ru.nsu.shelbogashev.tdgserver.service;
 
 import lombok.AccessLevel;
@@ -89,3 +90,4 @@ public class WebSocketUserService {
     }
 
 }
+*/

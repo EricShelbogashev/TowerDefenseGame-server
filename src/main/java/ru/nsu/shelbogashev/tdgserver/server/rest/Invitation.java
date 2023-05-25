@@ -3,8 +3,8 @@ package ru.nsu.shelbogashev.tdgserver.server.rest;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "friend_invitation")
-public class FriendshipInvitation {
+@Table(name = "invitations")
+public class Invitation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;

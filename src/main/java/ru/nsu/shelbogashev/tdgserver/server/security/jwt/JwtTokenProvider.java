@@ -3,18 +3,17 @@ package ru.nsu.shelbogashev.tdgserver.server.security.jwt;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import ru.nsu.shelbogashev.tdgserver.server.rest.User;
-import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.util.Base64;
 import java.util.Date;
-import java.util.Optional;
 
 import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.JWT_IS_EXPIRED_OR_INVALID;
 
@@ -36,7 +35,6 @@ public class JwtTokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    // TODO: Больше claims.
     public String createToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
         Date now = new Date();
@@ -59,7 +57,7 @@ public class JwtTokenProvider {
     }
 
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
+        String bearerToken = req.getHeader(HttpHeaders.AUTHORIZATION);
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }

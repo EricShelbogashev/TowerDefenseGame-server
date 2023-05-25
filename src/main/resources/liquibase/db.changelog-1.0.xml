@@ -22,7 +22,7 @@
     </changeSet>
 
     <changeSet id="1.0.1" author="eric.shelbogashev">
-        <createTable tableName="friend_invitation">
+        <createTable tableName="invitations">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -32,12 +32,12 @@
     </changeSet>
 
     <changeSet id="1.0.2" author="eric.shelbogashev">
-        <createTable tableName="friends">
+        <createTable tableName="relations">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="BIGINT"/>
-            <column name="friend_id" type="BIGINT"/>
+            <column name="from_id" type="BIGINT"/>
+            <column name="to_id" type="BIGINT"/>
         </createTable>
     </changeSet>
 

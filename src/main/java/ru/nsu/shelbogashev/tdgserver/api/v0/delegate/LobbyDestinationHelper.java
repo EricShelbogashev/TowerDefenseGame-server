@@ -1,3 +1,4 @@
+/*
 package ru.nsu.shelbogashev.tdgserver.api.v0.delegate;
 
 public class LobbyDestinationHelper {
@@ -6,4 +7,4 @@ public class LobbyDestinationHelper {
     public static String makeDestination(String destination, String lobbyId) {
         return destination.replace(KEY, lobbyId);
     }
-}
+}*/

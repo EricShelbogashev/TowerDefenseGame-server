@@ -1,3 +1,4 @@
+/*
 package ru.nsu.shelbogashev.tdgserver.service;
 
 import lombok.AccessLevel;
@@ -37,7 +38,9 @@ public class LobbyService {
             }
 
             Lobby lobby = Lobby.builder().adminSessionId(adminSessionId).build();
-            /* IMPORTANT */
+            */
+/* IMPORTANT *//*
+
             lobby.getMembers().add(adminSessionId);
             setLobby(lobby.getId(), lobby);
 
@@ -117,3 +120,4 @@ public class LobbyService {
     }
 
 }
+*/

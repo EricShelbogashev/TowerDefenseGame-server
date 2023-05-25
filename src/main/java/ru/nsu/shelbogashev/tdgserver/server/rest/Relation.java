@@ -3,15 +3,15 @@ package ru.nsu.shelbogashev.tdgserver.server.rest;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "friends")
-public class Friendship {
+@Table(name = "relations")
+public class Relation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(name = "user_id")
-    public Long userId;
+    @Column(name = "from_id")
+    public Long fromId;
 
-    @Column(name = "friend_id")
-    public Long friendId;
+    @Column(name = "to_id")
+    public Long toId;
 }

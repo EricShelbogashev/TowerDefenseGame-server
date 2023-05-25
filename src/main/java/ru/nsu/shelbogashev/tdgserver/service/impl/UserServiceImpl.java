@@ -1,76 +1,108 @@
 package ru.nsu.shelbogashev.tdgserver.service.impl;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage;
+import ru.nsu.shelbogashev.tdgserver.server.repository.RelationRepository;
 import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
+import ru.nsu.shelbogashev.tdgserver.server.rest.Relation;
 import ru.nsu.shelbogashev.tdgserver.server.rest.User;
 import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
-import java.util.Optional;
+import java.util.List;
 
-import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.SUCCESSFUL_REGISTRATION;
+import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.*;
 
 @Service
-@Log4j2
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final RelationRepository relationRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RelationRepository relationRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.relationRepository = relationRepository;
     }
 
-    @Bean
-    public static BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
-    }
-
-    @Override
-    public boolean authorize(User user) {
-        String encoded = passwordEncoder.encode(user.getPassword());
-        User orig = userRepository.findByUsername(user.getUsername()).orElse(null);
-        if (orig == null) {
-            throw new BadCredentialsException(ResponseMessage.USER_NOT_FOUND);
+/*    @Override
+    public List<User> getAllIncomingInvitations(Long userId) {
+        List<FriendshipInvitation> invitations = friendshipInvitationRepository.findAllByToId(userId);
+        if (invitations == null) {
+            return null;
         }
-        return orig.getPassword().equals(encoded);
+        return invitations.stream().
+                map(it -> userRepository.findById(it.fromId).orElseThrow(
+                                () -> new IllegalStateException(UNEXPECTED_ERROR)
+                        )
+                ).toList();
     }
 
     @Override
-    public String register(User user) {
-        // TODO: Add input validation.
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User registeredUser = userRepository.save(user);
+    public List<User> getAllOutgoingInvitations(Long userId) {
+        List<FriendshipInvitation> invitations = friendshipInvitationRepository.findAllByFromId(userId);
+        if (invitations == null) {
+            return null;
+        }
+        return invitations.stream().
+                map(it -> userRepository.findById(it.toId).orElseThrow(
+                        () -> new IllegalStateException(UNEXPECTED_ERROR)
+                )).toList();
+    }
 
-        log.info("register() : registered " + registeredUser);
-
-        return SUCCESSFUL_REGISTRATION;
+    public void acceptInvitation(User accepter, User friendCandidate) {
+        friendshipInvitationRepository.deleteByFromIdAndToId(friendCandidate.getId(), accepter.getId());
+        friendshipInvitationRepository.deleteByFromIdAndToId(accepter.getId(), friendCandidate.getId());
+        Friendship friendship = new Friendship();
+        friendship.userId = accepter.getId();
+        friendship.friendId = friendCandidate.getId();
+        friendshipRepository.saveAndFlush(friendship);
+        friendship = new Friendship();
+        friendship.userId = friendCandidate.getId();
+        friendship.friendId = accepter.getId();
+        friendshipRepository.saveAndFlush(friendship);
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        Optional<User> result = userRepository.findByUsername(username);
-
-        log.info("findByUsername() : found " + result);
-
-        return result;
+    public String declineInvitation(User decliner, User friendCandidate) {
+        friendshipInvitationRepository.deleteByFromIdAndToId(friendCandidate.getId(), decliner.getId());
+        return FRIEND_INVITATION_DECLINE;
     }
 
     @Override
-    public Optional<User> findUserById(Long id) {
-        // TODO: Add error throwing in case of failure.
-        Optional<User> result = userRepository.findUserById(id);
+    public String sendInvitation(User sender, User possibleFriend) {
+        if (friendshipInvitationRepository.findByFromIdAndToId(sender.getId(), possibleFriend.getId()).isPresent()) {
+            throw new IllegalOperationException(SYSTEM_ALREADY_HAS_FRIEND_INVITATION_ERROR);
+        }
+        if (friendshipRepository.findByUserIdAndFriendId(sender.getId(), possibleFriend.getId()).isPresent()) {
+            throw new IllegalOperationException(SYSTEM_ALREADY_HAS_FRIENDSHIP_ERROR);
+        }
+        if (friendshipInvitationRepository.findByFromIdAndToId(possibleFriend.getId(), sender.getId()).isPresent()) {
+            acceptInvitation(sender, possibleFriend);
+            return FRIENDSHIP_CONCLUDED;
+        }
+        FriendshipInvitation friendInvitation = new FriendshipInvitation();
+        friendInvitation.toId = possibleFriend.getId();
+        friendInvitation.fromId = sender.getId();
+        friendshipInvitationRepository.save(friendInvitation);
+        return FRIEND_INVITATION_SENT;
+    }*/
 
-        log.info("findById() : found " + result);
-
-        return result;
+    @Override
+    public List<User> getAllFriends(User user) {
+        List<Relation> friends = relationRepository.findAllByFromId(user.getId());
+        return friends.stream()
+                .map(
+                        it -> userRepository.findById(it.toId).orElseThrow(
+                                () -> new IllegalStateException(G0_0_ERROR)
+                        )
+                )
+                .toList();
     }
 
+/*    @Override
+    public String removeFriend(User deleter, User removedFriend) {
+        friendshipRepository.deleteByUserIdAndFriendId(deleter.getId(), removedFriend.getId());
+        friendshipRepository.deleteByUserIdAndFriendId(removedFriend.getId(), deleter.getId());
+        return FRIEND_DELETED;
+    }*/
 }

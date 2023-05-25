@@ -5,21 +5,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.nsu.shelbogashev.tdgserver.api.API;
 import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtConfigurer;
 import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtTokenProvider;
-import ru.nsu.shelbogashev.tdgserver.service.UserService;
 
 @Log4j2
 @Configuration
 public class SecurityConfig {
 
-    private static final String LOGIN_ENDPOINT = "/auth/authorize";
-    private static final String REGISTER_ENDPOINT = "/auth/register";
     private final JwtTokenProvider jwtTokenProvider;
 
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
+//        SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
 
     @Bean
@@ -28,20 +28,10 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(LOGIN_ENDPOINT, REGISTER_ENDPOINT).permitAll()
+                .requestMatchers(API.AUTH.LOGIN, API.AUTH.REGISTER).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
         return http.build();
     }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return authentication -> {
-            log.info("authenticate() : authentication.getName()=" + authentication.getName());
-            // TODO: implement
-            return authentication;
-        };
-    }
-
 }

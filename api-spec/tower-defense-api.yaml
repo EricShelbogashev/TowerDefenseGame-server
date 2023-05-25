@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  version: '0'
+  version: '1'
   title: AuthServiceAPI
   description: API for Tower Defense game study project. Performed by Eric Shelbogashev.
 
 paths:
   /auth/register:
     post:
-      summary: Метод для инициализации регистрации пользователя.
+      summary: Method for initializing user registration.
       tags:
         - Auth
       operationId: registerUser
@@ -16,48 +16,48 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRequest"
+              $ref: "#/components/schemas/AuthDto"
       responses:
         '200':
-          description: Пользователь успешно зарегистрирован.
+          description: The user has been successfully registered.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
         '400':
-          description: Что-то пошло не так.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
-  /auth/authorize:
+                $ref: "#/components/schemas/MessageDto"
+  /auth/login:
     post:
-      summary: Метод для аутентификации пользователя.
+      summary: Method for user authentication.
       tags:
         - Auth
-      operationId: authorizeUser
+      operationId: loginUser
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AuthRequest"
+              $ref: "#/components/schemas/AuthDto"
       responses:
         '200':
-          description: Авторизация прошла успешно.
+          description: Authorization was successful.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AuthResponse"
+                $ref: "#/components/schemas/TokenDto"
         '400':
-          description: Что-то пошло не так.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
   /user/friends/add:
     post:
-      summary: Метод для добавления друга пользователя.
+      summary: A method for adding a user friend.
       tags:
         - User
       operationId: addFriend
@@ -68,23 +68,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FriendRequest"
+              $ref: "#/components/schemas/UserDto"
       responses:
         '200':
-          description: Друг успешно добавлен.
+          description: The friend has been added successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
         '400':
-          description: Что-то пошло не так.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
   /user/friends/remove:
     post:
-      summary: Метод для удаления друга пользователя.
+      summary: A method for deleting a user's friend.
       tags:
         - User
       operationId: removeFriend
@@ -95,23 +95,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FriendRequest"
+              $ref: "#/components/schemas/UserDto"
       responses:
         '200':
-          description: Друг успешно удален.
+          description: The friend has been successfully deleted.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
         '400':
-          description: Что-то пошло не так.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
   /user/friends/get:
     get:
-      summary: Метод для получения списка друзей.
+      summary: Method for getting a list of friends.
       tags:
         - User
       operationId: getFriends
@@ -119,20 +119,20 @@ paths:
         - bearerAuth: [ ]
       responses:
         '200':
-          description: Список друзей получен.
+          description: The list of friends has been received.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/FriendResponse"
         '400':
-          description: Что-то пошло не так.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
   /user/friends/get/online:
     get:
-      summary: Метод для получения списка друзей.
+      summary: Method for getting a list of friends.
       tags:
         - User
       operationId: getFriendsOnline
@@ -140,17 +140,19 @@ paths:
         - bearerAuth: [ ]
       responses:
         '200':
-          description: Список друзей получен.
+          description: The list of online friends has been received.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/FriendOnlineResponse"
+                type: array
+                items:
+                  $ref: "#/components/schemas/WebsocketUserInfoDto"
         '400':
-          description: Что-то пошло не так.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
   /user/lobby/create:
     post:
       summary: Method witch performs lobby creation.
@@ -167,11 +169,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/LobbyDto"
         '400':
-          description: Lobby is already created.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
   /user/lobby/accept:
     post:
       summary: Method witch performs invitation accept.
@@ -190,11 +192,11 @@ paths:
         '200':
           description: Lobby was being destroyed.
         '400':
-          description: Lobby is not exists.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
   /user/lobby/destroy:
     post:
       summary: Method witch performs lobby destruction.
@@ -207,11 +209,11 @@ paths:
         '200':
           description: Lobby was being destroyed.
         '400':
-          description: Lobby is not exists.
+          description: Something went wrong.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Message"
+                $ref: "#/components/schemas/MessageDto"
 components:
   securitySchemes:
     bearerAuth:
@@ -219,14 +221,14 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    Message:
+    MessageDto:
       type: object
       required:
         - message
       properties:
         message:
           type: string
-    UserRequest:
+    AuthDto:
       type: object
       required:
         - username
@@ -236,36 +238,19 @@ components:
           type: string
         password:
           type: string
-    AuthRequest:
-      type: object
-      required:
-        - identifier
-        - password
-      properties:
-        identifier:
-          type: string
-        password:
-          type: string
-    FriendRequest:
-      type: object
-      required:
-        - identifier
-      properties:
-        identifier:
-          type: string
-    UserInfoResponse:
+    UserDto:
       type: object
       required:
         - username
       properties:
         username:
           type: string
-    WebsocketUserInfoResponse:
+    WebsocketUserInfoDto:
       type: object
       required:
-        - sessionId 
-        - username 
-        - status 
+        - sessionId
+        - username
+        - status
       properties:
         sessionId:
           type: string
@@ -276,7 +261,7 @@ components:
     FriendResponse:
       type: array
       items:
-        $ref: "#/components/schemas/UserInfoResponse"
+        $ref: "#/components/schemas/UserDto"
     LobbyDto:
       type: object
       required:
@@ -295,25 +280,10 @@ components:
           type: array
           items:
             type: string
-    FriendOnlineResponse:
-      type: array
-      items:
-        $ref: "#/components/schemas/WebsocketUserInfoResponse"
-    AuthResponse:
+    TokenDto:
       type: object
       required:
         - token
       properties:
         token:
           type: string
-    LobbyCreateResponse:
-      type: object
-      required:
-        - lobbyId
-      properties:
-        lobbyId:
-          type: string
-    LobbyMembersResponse:
-      type: array
-      items:
-        $ref: "#/components/schemas/UserInfoResponse"
