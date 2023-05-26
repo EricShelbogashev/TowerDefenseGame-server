@@ -12,11 +12,11 @@ import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
 import ru.nsu.shelbogashev.tdgserver.server.dto.ResponseFactory;
 import ru.nsu.shelbogashev.tdgserver.server.exception.AuthException;
 import ru.nsu.shelbogashev.tdgserver.server.model.User;
-import ru.nsu.shelbogashev.tdgserver.service.AuthService;
+import ru.nsu.shelbogashev.tdgserver.server.service.AuthService;
 
 import static ru.nsu.shelbogashev.tdgserver.server.message.ResponseMessage.INCORRECT_PRESENTATION_OF_CREDENTIALS;
-import static ru.nsu.shelbogashev.tdgserver.service.CredentialsHelper.isValidPassword;
-import static ru.nsu.shelbogashev.tdgserver.service.CredentialsHelper.isValidUsername;
+import static ru.nsu.shelbogashev.tdgserver.server.service.CredentialsHelper.isValidPassword;
+import static ru.nsu.shelbogashev.tdgserver.server.service.CredentialsHelper.isValidUsername;
 
 @RestController
 @Log4j2

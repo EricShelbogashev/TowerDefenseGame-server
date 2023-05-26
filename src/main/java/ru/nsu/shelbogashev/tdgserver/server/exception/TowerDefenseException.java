@@ -1,8 +1,6 @@
 package ru.nsu.shelbogashev.tdgserver.server.exception;
 
-import org.springframework.messaging.MessagingException;
-
-public class TowerDefenseException extends MessagingException {
+public class TowerDefenseException extends GlobalServerException {
     public TowerDefenseException(String message) {
         super(message);
     }

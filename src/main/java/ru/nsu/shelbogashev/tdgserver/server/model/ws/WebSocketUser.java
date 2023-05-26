@@ -29,6 +29,10 @@ public class WebSocketUser implements Serializable {
         status = Status.IN_MENU;
     }
 
+    public void leaveGame() {
+        status = Status.IN_LOBBY;
+    }
+
     public Lobby createLobby() {
         status = Status.IN_LOBBY;
         Lobby lobby = Lobby.builder()
@@ -43,5 +47,9 @@ public class WebSocketUser implements Serializable {
     public void joinLobby(Lobby lobby) {
         status = Status.IN_LOBBY;
         this.lobbyId = lobby.getId();
+    }
+
+    public void joinGame() {
+        status = Status.IN_GAME;
     }
 }

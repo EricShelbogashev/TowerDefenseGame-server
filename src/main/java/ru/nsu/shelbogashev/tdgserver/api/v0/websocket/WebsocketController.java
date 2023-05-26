@@ -2,6 +2,9 @@ package ru.nsu.shelbogashev.tdgserver.api.v0.websocket;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpAttributesContextHolder;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,22 +18,25 @@ import ru.nsu.shelbogashev.tdgserver.api.v0.delegate.AuthenticatedController;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.LobbyDto;
 import ru.nsu.shelbogashev.tdgserver.server.dto.Mapper;
 import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
-import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtUser;
 import ru.nsu.shelbogashev.tdgserver.server.model.ws.WebSocketUser;
-import ru.nsu.shelbogashev.tdgserver.service.WebsocketService;
-import ru.nsu.shelbogashev.tdgserver.service.handler.OnLobbyDestroyHandler;
-import ru.nsu.shelbogashev.tdgserver.service.handler.OnLobbyUpdateHandler;
+import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtUser;
+import ru.nsu.shelbogashev.tdgserver.server.service.UserService;
+import ru.nsu.shelbogashev.tdgserver.server.service.WebsocketService;
+import ru.nsu.shelbogashev.tdgserver.server.service.handler.OnLobbyDestroyHandler;
+import ru.nsu.shelbogashev.tdgserver.server.service.handler.OnLobbyUpdateHandler;
 
 @Log4j2
 @Controller
 public class WebsocketController extends AuthenticatedController implements OnLobbyUpdateHandler, OnLobbyDestroyHandler {
     private final WebsocketService websocketService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final UserService userService;
 
-    public WebsocketController(WebsocketService websocketService, UserDetailsService userDetailsService, SimpMessagingTemplate messagingTemplate) {
+    public WebsocketController(WebsocketService websocketService, UserDetailsService userDetailsService, SimpMessagingTemplate messagingTemplate, UserService userService) {
         super(userDetailsService);
         this.websocketService = websocketService;
         this.messagingTemplate = messagingTemplate;
+        this.userService = userService;
     }
 
     @EventListener
@@ -80,6 +86,17 @@ public class WebsocketController extends AuthenticatedController implements OnLo
         }
 
         return Mapper.toWebSocketUser(jwtUser, sessionId);
+    }
+
+    @MessageMapping(value = API.USER.API_INVITE_FRIEND)
+    public void fetchInviteFriend(@Payload String friendUsername) {
+        log.info("fetchInviteFriend() : friendUsername=" + friendUsername);
+
+        Lobby lobby = userService.inviteFriend(SimpAttributesContextHolder.currentAttributes().getSessionId());
+        String user = userService.inviteFriendGetSession(friendUsername);
+
+        LobbyDto lobbyDto = Mapper.toLobbyDto(lobby);
+        messagingTemplate.convertAndSendToUser(user, API.USER.FETCH_INVITE_FRIEND, lobbyDto);
     }
 
     @Override

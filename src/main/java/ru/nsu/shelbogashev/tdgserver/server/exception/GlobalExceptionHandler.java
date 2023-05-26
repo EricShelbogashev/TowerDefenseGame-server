@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.MessageDto;
@@ -50,6 +51,22 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseFactory.toMessage(exception.getMessage()));
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<MessageDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        log.info("handleMethodArgumentNotValidException() : exception.getMessage()=" + exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(ResponseFactory.toMessage(ResponseMessage.ILLEGAL_REQUEST_FORMAT_ERROR));
+    }
+
+    @ExceptionHandler(TowerDefenseException.class)
+    public ResponseEntity<MessageDto> handleTowerDefenseException(TowerDefenseException exception) {
+        log.error("handleTowerDefenseException() : exception.getMessage()=" + exception.getMessage());
+
+        exception.printStackTrace();
+
+        return ResponseEntity.badRequest().body(ResponseFactory.toMessage(exception.getMessage()));
+    }
+
     @ExceptionHandler(GlobalServerException.class)
     public ResponseEntity<MessageDto> handleGlobalExceptionHandler(GlobalServerException exception) {
         log.error("handleGlobalExceptionHandler() : exception.getMessage()=" + exception.getMessage());
@@ -58,36 +75,4 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(ResponseFactory.toMessage(ResponseMessage.UNEXPECTED_ERROR));
     }
-//    private static final String FETCH_ERROR_MESSAGE = "/topic/error";
-//    SimpMessagingTemplate messagingTemplate;
-//
-//    @SuppressWarnings("SameParameterValue")
-//    private static ResponseEntity<Message> getMessageResponse(String message, HttpStatus status) {
-//        Message response = new Message();
-//        response.setMessage(message);
-//        return new ResponseEntity<>(response, status);
-//    }
-//
-//
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity<Message> handleBadCredentialsException() {
-//        return getMessageResponse(ResponseMessage.BAD_CREDENTIALS_ERROR, HttpStatus.BAD_REQUEST);
-//    }
-//
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<Message> handleMethodArgumentNotValidExceptionException() {
-//        return getMessageResponse(ResponseMessage.ILLEGAL_REQUEST_FORMAT_ERROR, HttpStatus.BAD_REQUEST);
-//    }
-//
-//    @ExceptionHandler(IllegalStateException.class)
-//    public ResponseEntity<Message> handleIllegalStateExceptionException(IllegalStateException exception) {
-//        log.error(exception.getMessage());
-//        return getMessageResponse(ResponseMessage.UNEXPECTED_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-//
-//    @MessageExceptionHandler(TowerDefenseException.class)
-//    @SendToUser(FETCH_ERROR_MESSAGE)
-//    public ResponseEntity<Message> handleTowerDefenseException(TowerDefenseException exception) {
-//        return getMessageResponse(exception.getMessage(), HttpStatus.BAD_REQUEST);
-//    }
 }

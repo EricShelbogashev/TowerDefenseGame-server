@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
 import ru.nsu.shelbogashev.tdgserver.server.model.User;
+import ru.nsu.shelbogashev.tdgserver.server.repository.UserRepository;
 import ru.nsu.shelbogashev.tdgserver.server.security.jwt.JwtUserFactory;
 
 import java.util.Optional;

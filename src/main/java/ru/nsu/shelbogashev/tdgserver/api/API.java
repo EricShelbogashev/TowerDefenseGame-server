@@ -9,6 +9,7 @@ public class API {
     public static class STOMP {
         public static final String REGISTRY = "/websocket";
         public static final String FETCH_LOBBY_DESTROYED = "/topic/lobby.{lobby_id}.destroyed";
+        public static final String API_TOWER_CREATE = "/api/game.create.tower";
         public static final String FETCH_LOBBY_UPDATED = "/topic/lobby.{lobby_id}.updated";
     }
 
@@ -16,7 +17,8 @@ public class API {
         public static final String GET_FRIENDS = "/user/friends/get";
         public static final String GET_FRIENDS_ONLINE = "/user/friends/get/online";
         public static final String CREATE_LOBBY = "/user/lobby/create";
-        public static final String FETCH_INVITE_LOBBY = "/user/topic/lobby.invitation";
+        public static final String FETCH_INVITE_FRIEND = "/topic/lobby.invitation";
+        public static final String FETCH_ONLINE_FRIENDS = "/topic/friend.online.all";
         public static final String API_INVITE_FRIEND = "/api/lobby.invite.friend";
         public static final String API_INVITE_ACCEPT = "/user/lobby/accept";
     }

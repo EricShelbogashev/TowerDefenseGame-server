@@ -5,7 +5,7 @@ spring:
     host: localhost
     username: guest
     password: guest
-#    rabbitmq-plugins enable rabbitmq_stomp
+  #    rabbitmq-plugins enable rabbitmq_stomp
   data:
     redis:
       host: localhost

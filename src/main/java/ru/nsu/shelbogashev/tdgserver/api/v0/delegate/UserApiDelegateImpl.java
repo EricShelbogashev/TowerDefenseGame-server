@@ -3,7 +3,7 @@ package ru.nsu.shelbogashev.tdgserver.api.v0.delegate;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 import ru.nsu.shelbogashev.tdgserver.generated.api.UserApiDelegate;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.LobbyDto;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.UserDto;
@@ -13,13 +13,13 @@ import ru.nsu.shelbogashev.tdgserver.server.model.Lobby;
 import ru.nsu.shelbogashev.tdgserver.server.model.User;
 import ru.nsu.shelbogashev.tdgserver.server.model.ws.WebSocketUser;
 import ru.nsu.shelbogashev.tdgserver.server.security.JwtUserDetailsService;
-import ru.nsu.shelbogashev.tdgserver.service.UserService;
-import ru.nsu.shelbogashev.tdgserver.service.WebsocketService;
+import ru.nsu.shelbogashev.tdgserver.server.service.UserService;
+import ru.nsu.shelbogashev.tdgserver.server.service.WebsocketService;
 
 import java.util.List;
 
 @Log4j2
-@RestController
+@Controller
 public class UserApiDelegateImpl extends AuthenticatedController implements UserApiDelegate {
     private final UserService userService;
     private final WebsocketService websocketService;

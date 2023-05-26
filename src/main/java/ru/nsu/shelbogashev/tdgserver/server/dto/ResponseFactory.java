@@ -3,6 +3,10 @@ package ru.nsu.shelbogashev.tdgserver.server.dto;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.AuthDto;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.MessageDto;
 import ru.nsu.shelbogashev.tdgserver.generated.api.dto.TokenDto;
+import ru.nsu.shelbogashev.tdgserver.server.towerdefense.dto.EntityDto;
+import ru.nsu.shelbogashev.tdgserver.server.towerdefense.dto.FieldDto;
+
+import java.util.HashMap;
 
 public class ResponseFactory {
 
@@ -25,15 +29,15 @@ public class ResponseFactory {
         return dto;
     }
 
-//    public static FieldDto getGameEnd() {
-//        return FieldDto.builder()
-//                .guildhall(
-//                        EntityDto.builder()
-//                                .cell(0)
-//                                .id("0")
-//                                .name("guildhall")
-//                                .build())
-//                .roads(new HashMap<>())
-//                .build();
-//    }
+    public static FieldDto getGameEnd() {
+        return FieldDto.builder()
+                .guildhall(
+                        EntityDto.builder()
+                                .id("0")
+                                .cell(0)
+                                .name("guildhall")
+                                .build())
+                .roads(new HashMap<>())
+                .build();
+    }
 }
