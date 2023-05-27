@@ -1,4 +1,11 @@
+## Превью
+Доступно на Youtube: https://youtu.be/grZKU0CZgu0
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/grZKU0CZgu0/0.jpg)](https://youtu.be/grZKU0CZgu0)
+
 ## API
+Краткая карта доступных методов (точки содержат websocket методы)
+
 ![endpoint-map.png](readme.src%2Fendpoint-map.png)
 
 > ### ALERT
