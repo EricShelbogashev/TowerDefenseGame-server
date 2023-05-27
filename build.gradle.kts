@@ -20,9 +20,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-tomcat:3.0.5")
     implementation("org.springframework:spring-messaging:6.0.8")
     implementation("org.springframework.boot:spring-boot-starter-websocket:3.0.5")
-    implementation("org.springframework.boot:spring-boot-starter-web:3.0.5")
-    implementation("org.springframework.security:spring-security-jwt:1.1.1.RELEASE")
+
     implementation("org.springframework.boot:spring-boot-starter-security:3.0.5")
+
+    implementation("org.springframework.security:spring-security-jwt:1.1.1.RELEASE")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.0.5")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.5")
     implementation("org.springframework.boot:spring-boot-starter-reactor-netty:3.0.5")
 
